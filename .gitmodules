@@ -1,0 +1,3 @@
+[submodule "deck.js-template"]
+	path = deck.js-template
+	url = https://github.com/enspiral-dev-academy/deck.js-template
