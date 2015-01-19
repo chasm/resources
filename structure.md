@@ -1,0 +1,50 @@
+## possible organisation structure
+
+- Code
+  - Refactoring 
+  - Readability
+- Dev tools
+  - Terminal
+    - Navigation
+    - UI
+    - ARGV
+   	- Useful commands
+- Workflow
+  - Basic Git Workflow
+  - Advanced Git Workflow
+  - Kanban Board
+  - Agile 
+  - TDD
+- Methods
+  - Method basics
+  - Recursion
+- Enumerables
+  - Arrays
+    - Array Basics
+    - Nested Arrays
+    - Modeling a board
+  - Hashes 
+    - Hash Basics
+    - Nested Hashes
+  - Methods
+    - loops and iteration
+    - sorting + selection
+- Objects
+  - classes
+  - object basics
+  - private v. public
+  - inheritance
+  - modules
+  - coupling
+  - OOP / SOLID principles
+- Testing
+  - introduction
+- Databases
+  - ORM
+    - basics
+    - associations
+    - migrations
+- Regular Expressions
+- Design Patterns
+  - MVC
+  
