@@ -1,0 +1,10 @@
+@import './swiss.css';
+
+body { font-weight: 300;}
+h2 { text-align: center; font-size: 2.5em; margin-top: 20px; padding: 0;}
+h3 { margin-bottom: .2em; }
+li { padding: 0px; margin-bottom: 10px; }
+ul { margin-bottom: 0.5em; }
+p,small { font-weight: 400;}
+p { font-size: 90%; margin-bottom: 0; }
+code { font-size: 90%; }
