@@ -3,6 +3,8 @@ a) The syntax of a parent-child definition
 b) how a subclass can use the members of a superclass
 c) What really happen when we invoke a child constructor. 
 
+```cs
+
 using System;
 
 public class ParentClass
@@ -32,6 +34,8 @@ public class ChildClass : ParentClass
         child.print();
     }
 }
+
+```
 
 What will be the output?
 
