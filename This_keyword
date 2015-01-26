@@ -1,0 +1,38 @@
+THIS
+We use “this” keyword
+
+to refer to a field of a class when the method uses for its parameter or  variable the same name.
+This refers to the field of the class and not the field of the function that is uses it.
+ e.g
+ 
+ ```cs
+public class Employee 
+{
+    string name;
+    string alias;
+   
+    public Employee( string name, string alias)
+    {
+       this.name=name;
+       this.alias=alias;
+     
+    }
+}
+```
+Note. If we had not used for the parameters of the constructor the same name as the class fields then we would not need to use the this keyword.
+Static
+
+ ```cs
+public class Employee 
+{
+    string name;
+    string alias;
+   
+    public Employee( string Name, string Alias)
+    {
+       name=Name;
+       alias=Alias;
+     
+    }
+}
+```
