@@ -18,7 +18,7 @@ This repository can also be used as storage for folx wanting to contribute lectu
 8. Using all the above materials, create a new slide deck on [slides.com](slides.com). Login information can be found in the "teaching" chatroom on EDA's staff Slack account. Add a link to your slides in lecture-notes.md when you're finshed
 9. Make a video, using all the above materials. When finished, add link to lecture-notes.md
 
-After adding stuff, make sure to update the [lectures spreadsheet](https://docs.google.com/spreadsheets/d/1i3ChRxQhFhFnA_N0G211zYJFsRh3dcgZAzrg4alVEpI/edit#gid=1309685217)
+**After adding stuff, make sure to update the [lectures spreadsheet](https://docs.google.com/spreadsheets/d/1i3ChRxQhFhFnA_N0G211zYJFsRh3dcgZAzrg4alVEpI/edit#gid=1309685217)**
 
 ## How to Update Existing Content on Master
 1. Find the folder pertaining to the lecture you want to update.
