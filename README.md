@@ -17,6 +17,7 @@ This repository can also be used as storage for folx wanting to contribute lectu
 7. If necessary, find or create media and put it in the media folder. Reference media in lecture-notes.md
 8. Using all the above materials, create a new slide deck on [slides.com](slides.com). Login information can be found in the "teaching" chatroom on EDA's staff Slack account. Add a link to your slides in lecture-notes.md when you're finshed
 9. Make a video, using all the above materials. When finished, add link to lecture-notes.md
+10. :beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer:
 
 **After adding stuff, make sure to update the [lectures spreadsheet](https://docs.google.com/spreadsheets/d/1i3ChRxQhFhFnA_N0G211zYJFsRh3dcgZAzrg4alVEpI/edit#gid=1309685217)**
 
@@ -25,6 +26,6 @@ This repository can also be used as storage for folx wanting to contribute lectu
 2. Create a new branch
 3. Put your content in the appropriate file/folder 
 4. Submit a pull request for review
-5. Win
+5. :beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer::beer:
 
 ## Directory
