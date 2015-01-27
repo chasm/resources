@@ -1,6 +1,6 @@
 # Teaching Resources
 
-If time permits, when teachers prepare material for the day's lecture they can put talking points, code examples, etc in this common repository. This way, the materials are kept forever and can be reused, improved, and eventually turned into slides and videos.
+If time permits, as teachers prepare material for the day's lecture they can put their talking points, code examples, etc in this common repository. This way, the materials are kept forever and ever and can be reused, improved, and eventually turned into slides and videos.
 
 This repository can also be used as storage for folx wanting to contribute lecture material, awesome code examples + pictures (frogs/dragons in tuxedos), suggestions for talking points, etc. If you have something that you think should be part of a certain lecture -- this is the place to put it. 
 
