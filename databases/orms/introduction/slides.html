@@ -93,7 +93,7 @@
 <div class="sl-block" data-block-type="code" style="width: 442px; height: 492px; left: 53px; top: 130px;" data-block-id="263c779506c0f77318a5cff7645c7066"><div class="sl-block-content" style="z-index: 11; border-style: solid; border-width: 1px; font-size: 80%;"><pre class="ruby"><code># global $db_ref set by environment
 
 class Knight
-  attr_reader :name, :backstory
+  attr_accessor :name, :backstory
 
   def initialize(params = {})
     @name = params[:name]
@@ -138,14 +138,22 @@ jane.save()</code></pre></div></div>
 </div></div>
 <div class="sl-block" data-block-type="text" style="height: auto; min-width: 30px; min-height: 30px; width: 442px; left: 518px; top: 630px;" data-block-id="7c12b514a67bdd621b26600b7ae686fa"><div class="sl-block-content fragment" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 15;" dir="ui" data-fragment-index="0">
 <p>ORM</p>
-</div></div></section><section><div class="sl-block" data-block-type="code" style="width: 442px; height: 492px; left: 51px; top: 130px;" data-block-id="66b0f0ec06acd47929cce98a07991b71"><div class="sl-block-content" style="z-index: 10; border-style: solid; border-width: 1px; font-size: 80%;"><pre class="cs"><code>// global $db_ref set by environment
+</div></div></section><section><div class="sl-block" data-block-type="text" style="height: auto; width: 600px; left: 180px; top: 70px;" data-block-id="c457e3db4fa4584f0f6567a511a24128"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 10; font-size: 200%;">
+<p><span style="font-size:80px">Under the hood</span></p>
+</div></div>
+<div class="sl-block" data-block-type="text" style="height: auto; width: 861px; left: 50px; top: 210px;" data-block-id="e11ae108073a478365d8fbc363ea310d"><div class="sl-block-content" data-placeholder-tag="p" data-placeholder-text="Text" style="z-index: 11; padding: 10px; text-align: center;">
+<p style="text-align:justify">Determine table name from class name</p>
+
+<p style="text-align:justify">Determine object properties/attributes from schema</p>
+
+<p style="text-align:justify">Lots of helper methods</p>
+</div></div></section><section><div class="sl-block" data-block-type="code" style="width: 442px; height: 492px; left: 51px; top: 130px;" data-block-id="66b0f0ec06acd47929cce98a07991b71"><div class="sl-block-content" style="z-index: 10; border-style: solid; border-width: 1px; font-size: 80%;"><pre class="cs"><code>// static class DB_REF for database (yes, this is bad)
 
 public class Knight 
 {
   public string name { get; set; }
   public string backstory { get; set; }
-  public int id { get; }
-  private int id { set; }
+  public int id { get; set; }
 
   public Knight(string name, string backstory) 
   {
@@ -155,7 +163,7 @@ public class Knight
 
   public create() 
   {
-    result = $db_ref.sql("INSERT INTO 
+    result = DB_REF.sql("INSERT INTO 
       knights(name, backstory) VALUES
       ('"+this.name+"', '"+this.backstory+"')");
     this.id = result.id;
@@ -172,30 +180,26 @@ jane.name = "Jane";
 jane.update();</code></pre></div></div>
 <div class="sl-block" data-block-type="code" style="width: 442px; height: 492px; left: 518px; top: 130px;" data-block-id="9548b0ff9dd52428205ed93784a90fc8"><div class="sl-block-content fragment" style="z-index: 11; border-style: solid; border-width: 1px; font-size: 80%;" data-fragment-index="0"><pre class="cs"><code>public class Knight 
 {
-  public string _name { get; set; }
-  public string _backstory { get; set; }
-
-  public Knight(string name, string backstory) 
-  {
-    _name = name;
-    _backstory = backstory;
-  }
+  public int    Id { get; set;}
+  public string Name { get; set; }
+  public string Backstory { get; set; } 
 }
 
 public class KnightsDb : DbContext
 {
-  public DbSet&lt;Knight&gt; Knights { get; set; }
+  public Knights(): base("name=Knights"){}
+  public virtual DbSet&lt;Knight&gt; Knights { get; set; }
 }
 
-Knight jane = new Knight(name: "jane", 
-                  backstory: "Prince needs rescuing")
+Knight jane = new Knight() {Name: "jane", 
+                    Backstory: "Prince needs rescuing"}
 
 KnightsDb db = new KnightsDb();
-db.Knights.AddObject(jane);
+db.Knights.Add(jane);
 db.SaveChanges();
 
-jane.name = 'Jane'
-db.Knights.UpdateObject(jane); //??</code></pre></div></div>
+jane.Name = 'Jane'
+db.SaveChanges();</code></pre></div></div>
 <div class="sl-block" data-block-type="text" style="width: 892px; left: 51px; top: 33px; height: auto;" data-block-id="fe5d81ace04d369b35bf7b077f0459e0"><div class="sl-block-content" data-placeholder-tag="h2" data-placeholder-text="Title Text" style="text-align: left; z-index: 13;">
 <h2 style="text-align:center"><span style="color:rgb(255, 255, 255); text-align:center">C# - Service Object</span></h2>
 </div></div>
