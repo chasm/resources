@@ -39,6 +39,7 @@
   - OOP / SOLID principles
 - Testing
   - introduction
+  - jasmine testing
 - Databases
   - ORM
     - basics
