@@ -8,10 +8,10 @@ WaveColumn.prototype.initializeDivArray = function() {
 	}
 }
 
-WaveColumn.prototype.generateRedDiv = function(redness) {
+WaveColumn.prototype.generateRedDiv = function(opacity) {
 	var div = document.createElement('div');
 	div.className = 'line';
-	div.style.background = 'rgba(255,0,0,' + redness / 255 + ')';
+	div.style.background = 'rgba(255,0,0,' + opacity / 255 + ')';
 	return div;
 }
 

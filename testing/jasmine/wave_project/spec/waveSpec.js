@@ -24,24 +24,20 @@ describe('WaveColumn()', function() {
 		});	
 
 		it('each div has class \'line\'', function() {
-			expect(this.waveColumn.divArray[1].className).toEqual('line');
-			expect(this.waveColumn.divArray[47].className).toEqual('line');
 			expect(this.waveColumn.divArray[184].className).toEqual('line');
 		});
 
 		it('each div is red with opacity equal to 1 / 255 of its index in divArray', function() {
-			expect(this.waveColumn.divArray[0].style.background).toEqual('rgba(255, 0, 0, 0)');
 			expect(this.waveColumn.divArray[100].style.background).toEqual('rgba(255, 0, 0, 0.392157)');
-			expect(this.waveColumn.divArray[254].style.background).toEqual('rgba(255, 0, 0, 0.996078)');
 		});
 
 	});
 
-	describe('#generateRedDiv(redness)', function() {
+	describe('#generateRedDiv(opacity)', function() {
 
 		beforeAll(function() {
-			this.redness = 42;
-			this.div = this.waveColumn.generateRedDiv(this.redness)
+			this.opacity = 42;
+			this.div = this.waveColumn.generateRedDiv(this.opacity)
 		});
 
 		it('returns a div', function() {
@@ -52,7 +48,7 @@ describe('WaveColumn()', function() {
 			expect(this.div.className).toEqual('line')
 		});
 
-		it('the div is the color red with opacity equal to 1 / 255 of the input parameter \'redness\'', function() {
+		it('the div is the color red with opacity equal to 1 / 255 of the input parameter \'opacity\'', function() {
 			expect(this.div.style.background).toEqual('rgba(255, 0, 0, 0.164706)')
 		});
 
