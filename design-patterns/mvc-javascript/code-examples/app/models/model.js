@@ -6,5 +6,5 @@ function Box() {
 		div.style.width = size + 'px';
 		return div;
 	};
-	
+
 }
