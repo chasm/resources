@@ -6,7 +6,7 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FAA69065-2B91-47F8-B2FC-187D812B697B}</ProjectGuid>
+    <ProjectGuid>{126A9D0C-EC3C-4331-8E37-41C4C141F25B}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>DependancyInjectionWithMoq.Tests</RootNamespace>
@@ -93,7 +93,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DependancyInjectionWithMoq\DependancyInjectionWithMoq.csproj">
-      <Project>{9DA773E2-4B24-49F5-B9B1-52679BA2EBB1}</Project>
+      <Project>{780E03AC-E4E9-4CA0-AAFB-35F8E6E14501}</Project>
       <Name>DependancyInjectionWithMoq</Name>
     </ProjectReference>
   </ItemGroup>
