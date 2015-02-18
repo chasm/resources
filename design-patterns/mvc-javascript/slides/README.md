@@ -1,1 +1,1 @@
-## [You can view/edit/fork the slide deck here](http://enspiral-dev-academy.slides.com/enspiral-dev-academy/deck-8?token=awAZA68H)
+## [You can view/edit/fork the slide deck here](http://enspiral-dev-academy.slides.com/enspiral-dev-academy/mvc-javascript#/)
