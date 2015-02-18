@@ -1,6 +1,6 @@
 function View() {
 
-	var seedBox = document.body.children[0];
+	var seedBox = document.getElementById('seed');
 	var largestBox = seedBox;
 
 	this.clearScreen = function() {

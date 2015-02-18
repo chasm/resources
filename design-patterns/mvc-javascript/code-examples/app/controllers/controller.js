@@ -4,16 +4,6 @@ function Controller() {
 	var box = new Model();
 	var size = 10;
 
-	var initialize = function() {
-		view.clearScreen();
-	};
-
-	var stopIfDone = function(interval) {
-		if (size > 1500) {
-			clearInterval(interval);
-		}
-	};
-
 	this.partyTime = function() {
 		initialize();
 		var cycle = setInterval(function() {
@@ -23,6 +13,16 @@ function Controller() {
 			size += 2;
 			stopIfDone(cycle);
 		},15);
+	};
+
+	function initialize() {
+		view.clearScreen();
+	};
+
+	function stopIfDone(interval) {
+		if (size > 1500) {
+			clearInterval(interval);
+		}
 	};
 
 }
