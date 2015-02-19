@@ -61,7 +61,7 @@ describe('WaveColumn()', function() {
 		});
 
 		it('removes the first div in divArray', function() {
-			expect(this.waveColumn.divArray).not.toEqual(this.div);
+			expect(this.waveColumn.divArray[0]).not.toEqual(this.div);
 		});
 
 		it('places the removed div at the back of divArray', function() {
