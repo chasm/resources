@@ -15,9 +15,9 @@
 	</form>
 	<% @dogs.each do |dog| %>
 		<li>
-			<h2><%=dog.name%></h2>
-			<img src='<%=dog.image_url%>' />
-			<form action='/dogs/<%=dog.id%>/taint' method='post'>
+			<h2><%=dog["name"]%></h2>
+			<img src='<%=dog["image_url"]%>' />
+			<form action='/dogs/<%=dog["id"]%>/taint' method='post'>
 			  <input type='hidden' name='_method' value='patch' />
 			  <input type='submit' value='taint!' />
 			</form>
