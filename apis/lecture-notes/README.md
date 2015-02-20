@@ -29,13 +29,19 @@
 - Show a glimpse of the ruby cat server. show the routes and the model. Show how our get request sends json.
 
 ## Slide 11: 
+- Show a glimpse of the c# dog server. show routes and the model. show json response from get request.
+
+## Slide 12: 
 - Show a glimpse of the ruby cat client controller. Talk about httparty. 
 
-## Slide 12:
+## Slide 13: 
+- Show a glimpse of the c# dog client controller. Talk about ___________.
+
+## Slide 14:
 - Show a glimpse of the ruby cat server view. Show the dogs, and how we access their properties as if they were a hash.
 
-## Slide 13 - end:
-- Show a c# dog server and client
+## Slide 15: 
+- Show a glimpse of the c# dog client view. Talk about ___________.
 
 ## Last Slide: 
 - Show the site once more, answer any questions. Invite students to use the site, and to contribute to it.  
