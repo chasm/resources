@@ -1,27 +1,11 @@
-body {
-	font-family: 'Lato';
-	position: relative;
-	width: 90%;
-	margin: 0 auto;
-	text-align: center;
-}
+body {font-family: 'Lato'; margin: 0 auto; text-align: center; }
 
-ul {
-	list-style: none;
-	padding: 0;
-}
+ul, h1, h2, p { margin: 0; padding: 0;}
 
-h1 {
-	font-size: 80px;
-	margin: 20px auto;
-}
+ul {list-style: none; }
 
-h2 {
-	font-size: 30px;
-	margin: 0;
-}
+h1 {font-size: 80px; margin: 20px auto; }
 
-p {
-	margin: 0;
-	font-size: 40px;
-}
+h2 {font-size: 30px; }
+
+p {font-size: 40px; }
