@@ -1,6 +1,6 @@
 # What's an API?:
 
-[Slide Deck](./slides)
+[Slide Deck](http://enspiral-dev-academy.slides.com/enspiral-dev-academy/what-s-an-api)
 
 [Lecture Notes](./lecture-notes)
 
