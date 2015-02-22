@@ -1,0 +1,33 @@
+﻿@model DogServer.Models.CatDog
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<ul id="dogs">
+    <h1>Dogs</h1>
+    @foreach (var dog in Model.dogs)
+    {
+        <li>
+            <h2>@dog.Name</h2>
+            <img src="@dog.ImageUrl"/>
+        </li>
+    }
+</ul>
+
+<ul id="cats">
+    <h1>Cats</h1>
+    <form action="/cats/resurrect" method="POST">
+        <input type="submit" value="resurrect cats"/>
+    </form>
+    @foreach (var cat in Model.cats)
+    {
+        <li>
+            <h2>@cat.Name</h2>
+            <img src="@cat.ImageUrl" alt=""/>
+            <form action="/dogs/@cat.Id/taint" method="POST"></form>
+            <input type="hidden" name="_method" value="patch"/>
+            <input type="submit" value="taint"/>
+        </li>
+    }
+</ul>
