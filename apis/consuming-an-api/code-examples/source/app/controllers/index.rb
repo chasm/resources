@@ -1,5 +1,3 @@
-require "httparty"
-
 get "/:username" do
 	@username = params[:username]
 	parser = CommitParser.new(@username)

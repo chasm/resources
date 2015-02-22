@@ -1,12 +1,15 @@
+require "httparty"
+
 class CommitParser
 
-	attr_reader :histogram, :error
+	attr_reader :histogram
 
 	def initialize(username)
-		@data = HTTParty.get("https://api.github.com/users/#{username}/events")
+		@data = HTTParty.get("https://api.github.com/users/#{username}/events").parsed_response
 		load_commits!
 		load_words!
 		load_histogram!
+		p @histogram
 	end
 
 	def load_commits!
@@ -23,7 +26,7 @@ class CommitParser
 	end
 
 	def rate_limit_exceeded?
-		@data["message"].include?("API rate limit exceeded")
+		@data.is_a?(Hash) && @data["message"].include?("API rate limit exceeded")
 	end
 
 end
