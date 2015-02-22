@@ -6,7 +6,7 @@
 
 [Media](./media)
 
-[Ruby Example Code](./code-examples/ruby/source)
+[Ruby Example Code](./code-examples/ruby/rb-cat-server)
 [C# Example Code](./code-examples/cs/source)
 
 [Cat App](cat-server.herokuapp.com)
