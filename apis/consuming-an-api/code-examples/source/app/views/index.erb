@@ -1,0 +1,16 @@
+<ul id='histogram'>
+
+	<h1><%=@username%></h1>
+
+	<% if @error_message %>
+		<p><%=@error_message%></p>
+	<% end %>
+
+	<% @histogram.each do |word, freq| %>
+		<li>
+			<h2><%=word%></h2>
+			<p><%=freq%></p>
+		</li>
+	<% end %>
+	
+</ul>
