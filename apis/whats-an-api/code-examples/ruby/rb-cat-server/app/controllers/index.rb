@@ -12,6 +12,6 @@ patch "/dogs/:id/taint" do
 end
 
 post "/dogs/resurrect" do
-	HTTParty.post("dog-server.herokuapp.com/api/dogs/resurrect")
+	HTTParty.post("https://dog-server.herokuapp.com/api/dogs/resurrect")
 	redirect "/"
 end

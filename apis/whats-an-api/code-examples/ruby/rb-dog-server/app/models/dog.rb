@@ -9,7 +9,7 @@ class Dog < ActiveRecord::Base
 	end
 
 	def taint!
-		update(name: name.split('').shuffle.join(''), image_url: "http://bit.ly/1AVBy6z")
+		update(name: name.split('').shuffle.join(''), image_url: "http://bit.ly/1FdvDJ3")
 	end
 
 end
