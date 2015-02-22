@@ -1,0 +1,26 @@
+<ul id='dogs'>
+	<h1>Dogs</h1>
+	<% @dogs.each do |dog| %>
+		<li>
+			<h2><%=dog.name%></h2>
+			<img src='<%=dog.image_url%>' />
+		</li>
+	<% end %>
+</ul>
+
+<ul id='cats'>
+	<h1>Cats</h1>
+	<form action='/cats/resurrect' method='post'>
+		<input type='submit' value='resurrect cats' />
+	</form>
+	<% @cats.each do |cat| %>
+		<li>
+			<h2><%=cat["name"]%></h2>
+			<img src='<%=cat["image_url"]%>' />
+			<form action='/cats/<%=cat["id"]%>/taint' method='post'>
+			  <input type='hidden' name='_method' value='patch' />
+			  <input type='submit' value='taint!' />
+			</form>
+		</li>
+	<% end %>
+</ul>
