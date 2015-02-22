@@ -1,5 +1,5 @@
 get '/api/cats' do
-	Cat.all.to_json
+	Cat.all.order(id: :asc).to_json
 end
 
 patch '/api/cats/:id/taint' do
