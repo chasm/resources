@@ -5,7 +5,9 @@ using System.Net.Http;
 using System.Web;
 using System.Web.Mvc;
 using DogServer.Models;
+using Newtonsoft.Json;
 using RestSharp;
+using RestSharp.Deserializers;
 
 namespace DogServer.Controllers
 {
@@ -13,12 +15,15 @@ namespace DogServer.Controllers
     {
         // Uses RestSharp for sending http requests to the cat server
         private DogDBContext db = new DogDBContext();
-        private RestClient catClient = new RestClient("http://example.com");
+        private RestClient catClient = new RestClient("http://cat-server.herokuapp.com/");
 
         // GET: Index
         public ActionResult Index()
         {
-            return View(db.Dog.ToList());
+            var get = new RestRequest("api/cats", Method.GET);
+            get.RequestFormat = DataFormat.Json;
+            CatDog catDog = new CatDog(db.Dog.ToList(), catClient.Execute<List<Cat>>(get).Data);
+            return View(catDog);
         }
 
         // POST: TaintCat/5/
@@ -26,7 +31,7 @@ namespace DogServer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult TaintCat(int id)
         {
-            var taint = new RestRequest(String.Format("/cats/{0}/taint", id), Method.PATCH);
+            var taint = new RestRequest(String.Format("api/cats/{0}/taint", id), Method.PATCH);
             catClient.Execute(taint);
             return RedirectToAction("Index");
         }
@@ -36,7 +41,7 @@ namespace DogServer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ResurectCats()
         {
-            var res = new RestRequest("/cats/resurrect", Method.PATCH);
+            var res = new RestRequest("api/cats/resurrect", Method.PATCH);
             catClient.Execute(res);
             return RedirectToAction("Index");
         }

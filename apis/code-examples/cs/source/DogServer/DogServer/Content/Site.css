@@ -1,17 +1,34 @@
-﻿body {
-    padding-top: 50px;
-    padding-bottom: 20px;
+﻿html, body {
+	position: relative;
+	height: 100%;
+	width: 100%;
+	font-family: 'Open Sans', sans-serif;
+	background: #FFD393;
+	color: white;
 }
 
-/* Set padding to keep content from hitting the edges */
-.body-content {
-    padding-left: 15px;
-    padding-right: 15px;
+h2 {
+	margin: 10px auto;
 }
 
-/* Set width on the form input elements since they're 100% wide by default */
-input,
-select,
-textarea {
-    max-width: 280px;
+img {
+	height: 100px;
+	width: 100px;
+	border-radius: 50%;
+}
+
+ul {
+	position: absolute;
+	height: 100%;
+	width: 50%;	
+	list-style: none;
+	text-align: center;
+}	
+
+#cats {
+	left: 0;
+}
+
+#dogs {
+	right: 0;
 }
