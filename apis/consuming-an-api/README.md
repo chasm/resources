@@ -1,10 +1,8 @@
 # Consuming an API
 
-- [Slide Deck](./slide-deck)
+- [Slide Deck](https://enspiral-dev-academy.slides.com/enspiral-dev-academy/consuming-apis-with-ruby/edit)
 
 - [Lecture Notes](./lecture-notes)
-
-- [Media](./media)
 
 - [Example Code](./example-code)
 
