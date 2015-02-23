@@ -7,11 +7,14 @@ using GitCommitWords.Models;
 
 namespace GitCommitWords.Controllers {
     public class HomeController : Controller {
-        public ActionResult Index()
-        {
+        public ActionResult Index() {
+            return View();
+        }
+
+        public ActionResult Users(string id) {
             CommitParser commitParser = new CommitParser("eedrah");
             commitParser.Parse();
-            return View();
+            return View(commitParser);
         }
 
         public ActionResult About() {
