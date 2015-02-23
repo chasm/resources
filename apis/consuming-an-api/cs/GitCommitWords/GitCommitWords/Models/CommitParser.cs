@@ -24,7 +24,22 @@ namespace GitCommitWords.Models {
 
         public void Parse() {
             string json = MakeGithubRequest();
-            Process(json);
+            IEnumerable<string> messages = ExtractMessages(json);
+            CountWords(messages);
+        }
+
+        private void CountWords(IEnumerable<string> messages) {
+            foreach(string message in messages) {
+                string[] words = message.ToLowerInvariant().Split(
+                    new char[] { '.', '?', '!', ' ', ';', ':', ',', '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach(string word in words) {
+                    if(WordCount.ContainsKey(word)) {
+                        WordCount[word]++;
+                    } else {
+                        WordCount[word] = 1;
+                    }
+                }
+            }
         }
 
         private string MakeGithubRequest() {
@@ -35,12 +50,13 @@ namespace GitCommitWords.Models {
             return response.Content;
         }
 
-        private void Process(string json)
-        {
-            JArray events = JArray.Parse(json);
-            var a = from event in events.Children()
-                where (event["type"] == "PushEvent")
-                    select event["payload"]["commits"];
+        private IEnumerable<string> ExtractMessages(string json) {
+            return JArray.Parse(json)
+                    .Children()
+                    .Where(evnt => (string)evnt["type"] == "PushEvent")
+                    .Select(pushEvent => pushEvent["payload"]["commits"])
+                    .SelectMany(commits => commits)
+                    .Select(commit => (string)commit["message"]);
         }
     }
 }
