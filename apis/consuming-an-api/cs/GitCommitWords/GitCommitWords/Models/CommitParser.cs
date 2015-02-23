@@ -15,11 +15,18 @@ namespace GitCommitWords.Models {
         private static readonly RestClient GithubClient = new RestClient(ApiDomain);
 
         public string Username { get; set; }
-        public Dictionary<string, int> WordCount { get; set; }
+
+        public IOrderedEnumerable<KeyValuePair<string, int>> WordCount {
+            get {
+                return _WordCount.OrderByDescending(kv => kv.Value);
+            }
+        }
+
+        private Dictionary<string, int> _WordCount { get; set; }
 
         public CommitParser(string username) {
             Username = username;
-            WordCount = new Dictionary<string, int>();
+            _WordCount = new Dictionary<string, int>();
         }
 
         public void Parse() {
@@ -33,10 +40,10 @@ namespace GitCommitWords.Models {
                 string[] words = message.ToLowerInvariant().Split(
                     new char[] { '.', '?', '!', ' ', ';', ':', ',', '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach(string word in words) {
-                    if(WordCount.ContainsKey(word)) {
-                        WordCount[word]++;
+                    if(_WordCount.ContainsKey(word)) {
+                        _WordCount[word]++;
                     } else {
-                        WordCount[word] = 1;
+                        _WordCount[word] = 1;
                     }
                 }
             }
