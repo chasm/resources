@@ -3,10 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using GitCommitWords.Models;
 
 namespace GitCommitWords.Controllers {
     public class HomeController : Controller {
-        public ActionResult Index() {
+        public ActionResult Index()
+        {
+            CommitParser commitParser = new CommitParser("eedrah");
+            commitParser.Parse();
             return View();
         }
 

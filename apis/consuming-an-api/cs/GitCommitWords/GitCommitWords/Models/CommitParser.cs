@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Web;
+using Newtonsoft.Json.Linq;
 using RestSharp;
 
 namespace GitCommitWords.Models {
@@ -34,8 +35,12 @@ namespace GitCommitWords.Models {
             return response.Content;
         }
 
-        private void Process(string json) {
-            throw new NotImplementedException();
+        private void Process(string json)
+        {
+            JArray events = JArray.Parse(json);
+            var a = from event in events.Children()
+                where (event["type"] == "PushEvent")
+                    select event["payload"]["commits"];
         }
     }
 }
