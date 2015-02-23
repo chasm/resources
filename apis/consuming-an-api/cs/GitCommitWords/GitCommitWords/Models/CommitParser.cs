@@ -35,20 +35,6 @@ namespace GitCommitWords.Models {
             CountWords(messages);
         }
 
-        private void CountWords(IEnumerable<string> messages) {
-            foreach(string message in messages) {
-                string[] words = message.ToLowerInvariant().Split(
-                    new char[] { '.', '?', '!', ' ', ';', ':', ',', '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach(string word in words) {
-                    if(_WordCount.ContainsKey(word)) {
-                        _WordCount[word]++;
-                    } else {
-                        _WordCount[word] = 1;
-                    }
-                }
-            }
-        }
-
         private string MakeGithubRequest() {
             RestRequest request = new RestRequest(ApiResource, Method.GET);
             request.AddUrlSegment("username", Username);
@@ -64,6 +50,20 @@ namespace GitCommitWords.Models {
                     .Select(pushEvent => pushEvent["payload"]["commits"])
                     .SelectMany(commits => commits)
                     .Select(commit => (string)commit["message"]);
+        }
+
+        private void CountWords(IEnumerable<string> messages) {
+            foreach(string message in messages) {
+                string[] words = message.ToLowerInvariant().Split(
+                    new char[] { '.', '?', '!', ' ', ';', ':', ',', '/', '\\' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach(string word in words) {
+                    if(_WordCount.ContainsKey(word)) {
+                        _WordCount[word]++;
+                    } else {
+                        _WordCount[word] = 1;
+                    }
+                }
+            }
         }
     }
 }
