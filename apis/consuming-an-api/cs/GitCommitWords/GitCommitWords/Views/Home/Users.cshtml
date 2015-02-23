@@ -1,0 +1,17 @@
+﻿@model GitCommitWords.Models.CommitParser
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<h2>@Model.Username</h2>
+
+<table class="table">
+    @foreach (KeyValuePair<string, int> item in Model.WordCount)
+    {
+        <tr>
+            <td>@item.Key</td>
+            <td>@item.Value</td>
+        </tr>
+    }
+</table>
