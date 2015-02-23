@@ -4,5 +4,5 @@
 
 - [Lecture Notes](./lecture-notes)
 
-- [Example Code](./example-code)
+- [Example Code](./code-examples)
 
