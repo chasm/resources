@@ -1,7 +1,7 @@
 ﻿@model GitCommitWords.Models.CommitParser
 
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = string.Format("Word frequency for {0}", Model.Username);
 }
 
 <h2>@Model.Username</h2>
