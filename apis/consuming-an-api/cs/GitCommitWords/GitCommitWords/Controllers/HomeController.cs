@@ -12,7 +12,7 @@ namespace GitCommitWords.Controllers {
         }
 
         public ActionResult Users(string id) {
-            CommitParser commitParser = new CommitParser("eedrah");
+            CommitParser commitParser = new CommitParser(id);
             commitParser.Parse();
             return View(commitParser);
         }
