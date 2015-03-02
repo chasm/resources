@@ -17,5 +17,7 @@ namespace DogServer.Models
         }
 
         public DbSet<Dog> Dog { get; set; }
+
+        public System.Data.Entity.DbSet<DogServer.Models.Cat> Cats { get; set; }
     }
 }
