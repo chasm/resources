@@ -1,0 +1,28 @@
+﻿html, body {
+    background: #FFD393;
+    color: white;
+    font-family: 'Open Sans', sans-serif;
+    height: 100%;
+    position: relative;
+    width: 100%;
+}
+
+h2 { margin: 10px auto; }
+
+img {
+    border-radius: 50%;
+    height: 100px;
+    width: 100px;
+}
+
+ul {
+    height: 100%;
+    list-style: none;
+    position: absolute;
+    text-align: center;
+    width: 50%;
+}
+
+#cats { left: 0; }
+
+#dogs { right: 0; }
