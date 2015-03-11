@@ -26,8 +26,7 @@ namespace DogServer.Controllers
         }
 
         // POST: TaintCat/5/
-        [System.Web.Http.HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult TaintCat(int id)
         {
             var taint = new RestRequest(String.Format("api/cats/{0}/taint", id), Method.PATCH);
@@ -36,11 +35,10 @@ namespace DogServer.Controllers
         }
 
         // POST: ResurectCats
-        [System.Web.Http.HttpPost]
-        [ValidateAntiForgeryToken]
+        [HttpPost]
         public ActionResult ResurectCats()
         {
-            var res = new RestRequest("api/cats/resurrect", Method.PATCH);
+            var res = new RestRequest("api/cats/resurrect", Method.POST);
             catClient.Execute(res);
             return RedirectToAction("Index");
         }

@@ -17,17 +17,22 @@
 
 <ul id="cats">
     <h1>Cats</h1>
-    <form action="/cats/resurrect" method="POST">
+    @using (Html.BeginForm("ResurectCats", "Home", FormMethod.Post))
+    {
         <input type="submit" value="resurrect cats"/>
-    </form>
+    }
+
     @foreach (var cat in Model.cats)
     {
         <li>
             <h2>@cat.name</h2>
             <img src="@cat.image_url" alt=""/>
-            <form action="/dogs/@cat.id/taint" method="POST"></form>
-            <input type="hidden" name="_method" value="patch"/>
-            <input type="submit" value="taint"/>
+
+            @using (Html.BeginForm("TaintCat", "Home", new {id = cat.id},FormMethod.Post))
+            {
+                <input type = "submit" value = "taint"/>
+            }
+
         </li>
     }
 </ul>
