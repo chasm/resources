@@ -1,4 +1,4 @@
-require_relative './example.rb'
+require_relative './bingo.rb'
 
 def assert_true(test)
   raise "should return true" unless test
