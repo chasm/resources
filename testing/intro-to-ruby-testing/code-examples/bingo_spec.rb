@@ -43,7 +43,7 @@ end
   end
 
 # Bingo#column(letter)
-  # given a letter, returns corresponding column number
+  # given a letter, returns corresponding column
   assert_equal(bingo.column("B"), [47,22,83,25,75])
   assert_equal(bingo.column("N"), [71,75,97,96,54])
 
@@ -125,6 +125,8 @@ until bingo.finished
   ticket = bingo.new_ticket
   bingo.mark!(ticket)
   bingo.print_board
-  bingo.check!
+  bingo.check_vertical!
+  bingo.check_horizontal!
+  bingo.check_diagonal!
   sleep(0.01)
 end
