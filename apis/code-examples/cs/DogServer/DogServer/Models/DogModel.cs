@@ -9,6 +9,7 @@ namespace DogServer.Models
         {
         }
 
+
         public DbSet<Dog> Dog { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

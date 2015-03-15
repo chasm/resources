@@ -2,8 +2,8 @@
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
-using System.Web.Mvc;
 using DogServer.Models;
+using WebGrease.Css.Extensions;
 
 namespace DogServer.Controllers
 {
@@ -16,8 +16,8 @@ namespace DogServer.Controllers
             return db.Dog.Select(s => s);
         }
 
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/dogs/taint/{id}")]
+        [HttpPost]
+        [Route("api/dogs/taint/{id}")]
         public HttpResponseMessage Taint(int id)
         {
             db.Dog.Single(s => s.Id == id).ImageUrl = "http://bit.ly/17yp0G1";
@@ -25,12 +25,13 @@ namespace DogServer.Controllers
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
 
-        [System.Web.Http.HttpPost]
-        [System.Web.Http.Route("api/dogs/resurrect")]
-        public HttpResponseMessage Resurrect()
+        [HttpPost]
+        public HttpResponseMessage PostRessurect()
         {
-            db.Database.Delete();
-            db.Database.Create();
+            var temp = db.Dog.Select(s => s);
+            temp.ForEach(each => db.Dog.Remove(each));
+            db.SaveChanges();
+            new DatabaseSeed().Seed(new DogModel());
             return Request.CreateResponse(HttpStatusCode.Accepted);
         }
     }

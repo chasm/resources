@@ -133,6 +133,7 @@
     <Compile Include="Models\CatDog.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\Cat.cs" />
+    <Compile Include="Models\DatabaseSeed.cs" />
     <Compile Include="Models\Dog.cs" />
     <Compile Include="Models\DogModel.cs" />
     <Compile Include="Global.asax.cs">
