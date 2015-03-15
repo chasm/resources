@@ -129,7 +129,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\DogApiController.cs" />
+    <Compile Include="Controllers\DogsController.cs" />
     <Compile Include="Models\CatDog.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Models\Cat.cs" />

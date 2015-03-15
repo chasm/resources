@@ -5,7 +5,7 @@ namespace DogServer.Models
     public class DogModel : DbContext
     {
         public DogModel()
-            : base("name=DogModel")
+            : base("name=DefaultConnection")
         {
         }
 
@@ -13,6 +13,8 @@ namespace DogServer.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            Database.SetInitializer(new MigrateDatabaseToLatestVersion<DogModel, Configuration>());
+            base.OnModelCreating(modelBuilder);
         }
     }
 }
