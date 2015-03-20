@@ -9,7 +9,7 @@ class Bingo
   end
 
   def new_ticket
-    {letter: @letters.sample, number: rand(1..100) }
+    { letter: @letters.sample, number: rand(1..100) }
   end
 
   def mark!(ticket)
