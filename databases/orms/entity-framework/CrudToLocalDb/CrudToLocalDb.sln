@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2013
+VisualStudioVersion = 12.0.31101.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudToLocalDb", "CrudToLocalDb\CrudToLocalDb.csproj", "{A3554440-3ECE-43FD-BC3C-6A40880B564B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CrudToLocalDb.Tests", "CrudToLocalDb.Tests\CrudToLocalDb.Tests.csproj", "{EC0495D7-29E9-4E91-89F6-B36FAB800379}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A3554440-3ECE-43FD-BC3C-6A40880B564B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3554440-3ECE-43FD-BC3C-6A40880B564B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3554440-3ECE-43FD-BC3C-6A40880B564B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3554440-3ECE-43FD-BC3C-6A40880B564B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EC0495D7-29E9-4E91-89F6-B36FAB800379}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EC0495D7-29E9-4E91-89F6-B36FAB800379}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EC0495D7-29E9-4E91-89F6-B36FAB800379}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EC0495D7-29E9-4E91-89F6-B36FAB800379}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
