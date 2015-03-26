@@ -12,16 +12,16 @@ Lecture Notes:
     - follow the instructions in devise's post-installation terminal output. emphasize that this printout needs to be read.
       - add ```config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }``` to /config/environments/development.rb
       - add ```root to: "pages#home``` to routes.rb.
-        - mention that we are doing this so that when a user successfully signs in, devise knows where to redirect to. 
-      - add flash messages 
+        - mention that we are doing this so that when a user successfully signs in, devise knows where to redirect to.
+      - add flash messages
         ```
         <p class="notice"><%= notice %></p>
         <p class="alert"><%= alert %></p>
         ```
-        to application.html.erb, in the body. 
+        to application.html.erb, in the body.
       - ignore step 4, because we're using rails 4.2.0.
-      - skip step 5, but mention that since devise's default views for the user signin/signup pages are quite ugly, we can see + edit the views if we want by running ```rails g devise:views``` 
-    - go back to 'getting started' on devise's github page.  
+      - skip step 5, but mention that since devise's default views for the user signin/signup pages are quite ugly, we can see + edit the views if we want by running ```rails g devise:views```
+    - go back to 'getting started' on devise's github page.
       - run ```rails generate devise user```
         - explain that MODEL is a placeholder for the name of your model. you can name your model whatever you want, but since we're commonly creating a 'user' model with devise, we name it 'user'.
       - talk about devise's helpers, namely, ```before_action :authenticate_user!```, ```user_signed_in?```, and ```current_user```.
@@ -36,3 +36,7 @@ Lecture Notes:
         <%=button_to('sign out', destroy_user_session_path, method: 'delete')%>
       ```
   - start up a server, and walk through the views that we've created.
+
+- For controller testing with devise, refer them to this link:
+https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
+  - will need to briefly explain the usage of factory girl here. (by default devise only requires a user to have an email and password)
