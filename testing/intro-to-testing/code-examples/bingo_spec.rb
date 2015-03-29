@@ -2,22 +2,27 @@ require_relative './bingo.rb'
 
 def assert_true(test)
   raise "should return true" unless test
+  puts "passed"
 end
 
 def assert_equal(actual, expected)
   raise "expected #{expected} but got #{actual}" unless expected == actual
+  puts "passed"
 end
 
 def assert_false(test)
   raise "should return false" if test
+  puts "passed"
 end
 
 def assert_presence(item, collection)
   raise "#{item} not present in collection: #{collection}" unless collection.include?(item)
+  puts "passed"
 end
 
 def assert_within_range(item, low, high)
   raise "got #{item}, but should be between #{low} and #{high}" unless item.between?(low,high)
+  puts "passed"
 end
 
 sample_board = [[47, 44, 71, 8, 88],

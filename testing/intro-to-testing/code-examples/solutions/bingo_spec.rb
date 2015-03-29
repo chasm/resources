@@ -25,7 +25,6 @@ def assert_within_range(item, low, high)
   puts "passed!"
 end
 
-
 # Bingo#initialize(board)
   sample_board = [[47, 44, 71, 8, 88],
                   [22, 69, 75, 65, 73],

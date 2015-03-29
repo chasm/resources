@@ -24,11 +24,11 @@ class Bingo
   end
 
   def print_board
+    system('clear')
     @board.each do |row|
       row.each { |number| print number.to_s.ljust(4) }
       puts
     end
-    puts
   end
 
 end
