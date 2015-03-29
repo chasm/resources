@@ -6,7 +6,7 @@ Lecture Notes:
   - speak briefly on the available modules, their value, and so on.
   - point out the [wiki](https://github.com/plataformatec/devise/wiki)
   - Run through the "Getting Started" section of Devise's Github.
-    - open the [example rails app](./example). This is a clean slate that you can do an example devise installation/setup on.
+    - open the [example rails app](./devise-setup-example). This is a clean slate that you can do an example devise installation/setup on.
     - add ```gem 'devise'``` to the gemfile and bundle
     - run ```rails generate devise:install``` and show the files/folders that were created
     - follow the instructions in devise's post-installation terminal output. emphasize that this printout needs to be read.
