@@ -9,13 +9,7 @@ $(document).ready(function() {
         var cats = JSON.parse(res);
         $('#cat-container').empty();
         for (var i = 0; i < cats.length; i++) {
-          var currentCat = cats[i];
-          $('#cat-container').append(
-            '<li>' +
-              '<h2>' + currentCat.name + '</h2>' +
-              '<h3>' + currentCat.product + '</h3>' +
-            '</li>'
-          );
+          appendCat(cats[i])
         }
       },
       error : function() {
@@ -23,6 +17,15 @@ $(document).ready(function() {
       }
     });
   });
+
+  function appendCat(cat) {
+    $('#cat-container').append(
+      '<li>' +
+        '<h2>' + cat.name + '</h2>' +
+        '<h3>' + cat.product + '</h3>' +
+      '</li>'
+    );
+  }
 
   $('#new-cat-form').on('submit', function(e) {
     e.preventDefault();
