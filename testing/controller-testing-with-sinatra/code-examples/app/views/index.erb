@@ -1,0 +1,18 @@
+<h1>Items Page</h1>
+
+<form id='new-item-form' method='post' action='/items'>
+  <input type='text' name='name' placeholder='name'/>
+  <input type='text' name='price' placeholder='price'/>
+  <input type='text' name='description' placeholder='description'/>
+  <input type='submit' value='create item' />
+</form>
+
+<ul id='items'>
+  <% @items.each do |item| %>
+    <li>
+      <h2><%=item.name%></h2>
+      <h3>$<%=item.price%></h3>
+      <p><%=item.description%></p>
+    </li>
+  <% end %>
+</ul>
