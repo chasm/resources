@@ -10,4 +10,4 @@ go through the [code examples](./code-examples)
   - show bingo_spec.rb, introduce our tests. take the pseudocode already there, and work with students to start converting it to tests. After writing a test, write code to pass the test. Once the test passes, refactor the code. Continue until finished, and once finished run bingo_script.rbb
   - if you need, solutions are in the [solutions folder](./solutions)
 
-afterwards, you can point them to this [refactor challenge](https://github.com/enspiral-dev-academy/refactor-this-challenge`)
+afterwards, you can point them to this [refactor challenge](https://github.com/enspiral-dev-academy/refactor-this-challenge)
