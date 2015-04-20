@@ -16,4 +16,5 @@ until bingo.finished
   bingo.check_diagonal!
   sleep(0.05)
 end
+
 puts "~* $$$ hunnid analog stax $$$ *~"
