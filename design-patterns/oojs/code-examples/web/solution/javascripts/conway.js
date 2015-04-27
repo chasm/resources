@@ -1,20 +1,20 @@
 function Conway (size) {
   this.size = size;
-  this.grid = generateGrid(size);
+  this.grid = this.generateGrid(size);
   this.directions = [ [-1,-1], [-1, 0], [-1, 1], [ 0,-1], [ 0, 1], [ 1,-1], [ 1, 0], [ 1, 1] ];
-
-  function generateGrid(size) {
-    var grid = [];
-    for (var i = 0; i < size; i++) {
-      var row = [];
-      for (var j = 0; j < size; j++) {
-        row.push(new Cell());
-      }
-      grid.push(row);
-    }
-    return grid;
-  };
 }
+
+Conway.prototype.generateGrid = function (size) {
+  var grid = [];
+  for (var i = 0; i < size; i++) {
+    var row = [];
+    for (var j = 0; j < size; j++) {
+      row.push(new Cell());
+    }
+    grid.push(row);
+  }
+  return grid;
+};
 
 Conway.prototype.renderGrid = function () {
   for (var i = 0; i < this.size; i++) {

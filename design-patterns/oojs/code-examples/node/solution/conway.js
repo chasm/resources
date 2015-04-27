@@ -1,5 +1,5 @@
 function Cell () {
-  this.alive = Math.random() > 0.7;
+  this.alive = Math.random() > 0.9;
   this.neighbors = 0;
 }
 
@@ -89,10 +89,10 @@ Conway.prototype.updateCells = function () {
   }
 };
 
-var conway = new Conway(50);
+var conway = new Conway(100);
 
 var loop = setInterval(function() {
   conway.show();
   conway.tallyNeighbors();
   conway.updateCells();
-}, 100);
+}, 50);
