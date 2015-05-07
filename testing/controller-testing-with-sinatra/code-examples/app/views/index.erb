@@ -1,5 +1,9 @@
 <h1>Items Page</h1>
 
+<% if @errors %>
+  <p><%= @errors %></p>
+<% end %>
+
 <form id='new-item-form' method='post' action='/items'>
   <input type='text' name='name' placeholder='name'/>
   <input type='text' name='price' placeholder='price'/>

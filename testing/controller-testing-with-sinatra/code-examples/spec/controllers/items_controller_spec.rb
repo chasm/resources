@@ -2,38 +2,69 @@ require 'spec_helper'
 
 describe "ItemsController" do
 
+  let(:valid_params) { { name: Faker::Commerce.product_name, description: Faker::Lorem.sentence, price: rand(1..100) } }
+  let(:invalid_params) { { price: rand(1..100), description: Faker::Lorem.sentence } }
+
   describe "GET /items" do
 
-    before(:all) do
-      @item = Item.create(name: Faker::Commerce.product_name, description: Faker::Lorem.sentence, price: rand(1..100))
-      get '/items'
+    context "if no errors stored in the session" do
+
+      before do
+        @item = Item.create(valid_params)
+        get '/items'
+      end
+
+      it "has http status code of 200" do
+        expect(last_response.status).to eq(200)
+      end
+
+      it "renders the items index page" do
+        expect(last_response.body).to include("<h1>Items Page</h1>")
+      end
+
+      it "renders all items on the page" do
+        expect(last_response.body).to include(@item.description)
+      end
+
     end
 
-    it "has http status code of 200" do
-      expect(last_response.status).to eq(200)
-    end
+    context "if errors in the session" do
 
-    it "renders the items index page" do
-      expect(last_response.body).to include("<h1>Items Page</h1>")
-    end
+      before do
+        @item = Item.create(valid_params)
+        get '/items', {}, "rack.session" => {:errors => "meowmeow"}
+      end
 
-    it "renders all items on the page" do
-      expect(last_response.body).to include(@item.description)
-    end
+      it "has http status code of 200" do
+        expect(last_response.status).to eq(200)
+      end
 
-    after(:all) do
-      Item.destroy_all
+      it "renders the items index page" do
+        expect(last_response.body).to include("<h1>Items Page</h1>")
+      end
+
+      it "renders all items on the page" do
+        expect(last_response.body).to include(@item.description)
+      end
+
+      it "renders an error message on the page" do
+        expect(last_response.body).to include("meowmeow")
+      end
+
+      it "clears the session of errors" do
+        expect(session[:errors]).to be_nil
+      end
+
     end
 
   end
 
   describe "POST /items" do
 
-    describe "if valid request" do
+    context "if valid request" do
 
-      before(:all) do
-        @params = { name: Faker::Commerce.product_name, price: rand(1..100), description: Faker::Lorem.sentence }
-        post '/items', @params
+      before do
+        post '/items', valid_params
       end
 
       it "returns http status code of 302" do
@@ -41,24 +72,19 @@ describe "ItemsController" do
       end
 
       it "creates an item in the database" do
-        expect(Item.find_by_name(@params[:name])).to be_truthy
+        expect(Item.find_by_name(valid_params[:name])).to be_truthy
       end
 
       it "redirects to /items" do
         expect(last_response.location).to include('/items')
       end
 
-      after(:all) do
-        Item.destroy_all
-      end
-
     end
 
-    describe "if invalid request" do
+    context "if invalid request" do
 
-      before(:all) do
-        @params = { price: rand(1..100), description: Faker::Lorem.sentence }
-        post '/items', @params
+      before do
+        post '/items', invalid_params
       end
 
       it "returns http status code of 302" do
@@ -66,20 +92,23 @@ describe "ItemsController" do
       end
 
       it "does not create an item in the database" do
-        expect(Item.find_by_name(@params[:name])).to be_nil
+        expect(Item.find_by_name(invalid_params[:name])).to be_nil
       end
 
       it "redirects to /items" do
         expect(last_response.location).to include('/items')
       end
 
-      after(:all) do
-        Item.destroy_all
+      it "stores list of errors in the session" do
+        expect(session[:errors]).to be_truthy
       end
 
     end
 
+  end
 
+  after do
+    Item.destroy_all
   end
 
 end
