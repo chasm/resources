@@ -1,20 +1,23 @@
 function Cell () {
-  this.element = $("<div class='cell" + russianRoulette() + "'></div>");
+  this.$element = $("<div class='cell'></div>");
   this.neighbors = 0;
-
-  function russianRoulette() {
-    return Math.random() > 0.5 ? ' alive' : '';
-  }
+  this.playRussianRoulette();
 }
 
-Cell.prototype.kill = function () {
-  this.element.removeClass('alive');
+Cell.prototype.playRussianRoulette = function () {
+  if (Math.random() > 0.8) {
+    this.resurrect();
+  }
 };
 
-Cell.prototype.resurrect = function () {
-  this.element.addClass('alive');
+Cell.prototype.kill = function() {
+  this.$element.removeClass('alive');
+};
+
+Cell.prototype.resurrect = function() {
+  this.$element.addClass('alive');
 };
 
 Cell.prototype.isAlive = function () {
-  return this.element.hasClass('alive');
-};
+  return this.$element.hasClass('alive');
+}
