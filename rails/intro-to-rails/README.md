@@ -148,7 +148,7 @@ end
 ## generate CatsController
 - run: ```rails g controller cats```
 
-### add 'index' action
+### add '#index' action
 - create a route for the action in ```config/routes.rb```
 ```ruby
 get '/cats', to: 'cats#index'
@@ -159,7 +159,7 @@ root to: 'cats#index'
 ```
 
 - add controller specs:
-```
+```ruby
 require 'rails_helper'
 
 RSpec.describe CatsController, type: :controller do
@@ -182,7 +182,7 @@ RSpec.describe CatsController, type: :controller do
 end
 ```
 add controller code:
-```
+```ruby
 class CatsController < ApplicationController
 
 	def index
