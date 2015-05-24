@@ -145,18 +145,44 @@ class Cat < ActiveRecord::Base
 
 end
 ```
+
+## create seed data
+-  in ```db/seeds.rb```
+```ruby
+require 'faker'
+
+10.times { Cat.create(name: Faker::Name.name, life_story: Faker::Lorem.paragraph, image_url: Faker::Avatar.image) }
+```
+- run ```rake db:seed```
+
+## generate necessary routes
+- our resource is 'cats'
+- the actions we'll perform on that resource are:
+	- read
+		- get #index (show all cats)
+		- get #show (show one cat)
+	- create
+		- get #new (render a form to create a new cat)
+		- post #create (create a new cat)
+	- update
+		- get #edit (render a form to edit a cat)
+		- patch #update (edit a cat)
+- to generate these routes, we add the following to ```config/routes.rb```
+```ruby
+  resources :cats, except: :destroy
+```
+- and maybe we'll set the root page of our application to the cats index page
+```ruby
+  resources :cats, except: :destroy
+  root to: 'cats#index'
+```
+- run ```rake routes``` to see the generated routes
+
 ## generate CatsController
-- run: ```rails g controller cats```
+- we've created a bunch of routes, each of which points to a specific controller action. Now we need to actually create those controller actions. We can start by generating a controller.
+```rails g controller cats```
 
 ### add '#index' action
-- create a route for the action in ```config/routes.rb```
-```ruby
-get '/cats', to: 'cats#index'
-```
-- we'll also make this route the 'root route' of our application
-```ruby
-root to: 'cats#index'
-```
 
 - add controller specs:
 ```ruby
@@ -181,7 +207,7 @@ RSpec.describe CatsController, type: :controller do
 
 end
 ```
-add controller code:
+- add controller code:
 ```ruby
 class CatsController < ApplicationController
 
@@ -191,14 +217,23 @@ class CatsController < ApplicationController
 
 end
 ```
-add view: ```/views/cats/index.html.erb```
+- add view: ```/views/cats/index.html.erb```
+```
+<h1>meowtown</h1>
+
+<ul>
+  <% @cats.each do |cat| %>
+    <li>
+      <h2><%= cat.name %></h2>
+      <img src='<%=cat.image_url%>' />
+      <p>lives left: <%= cat.lives %></p>
+    </li>
+  <% end %>
+</ul>
+```
 
 ### add '#show' action
-- create route:
-```ruby
-  get '/cats/:id', to: 'cats#show'
-```
-- controller specs
+- add specs
 ```ruby
 	describe "#show" do
 
@@ -215,9 +250,93 @@ add view: ```/views/cats/index.html.erb```
 
 	end
 ```
-- controller code
-```
+- add controller action
+```ruby
 	def show
 		@cat = Cat.find(params[:id])
 	end
+```
+- add view in ```app/views/show.html.erb```
+```
+<h1><%= @cat.name %></h1>
+
+<img src='<%= @cat.image_url %>' />
+
+<h2>Life Story:</h2>
+
+<p><%= @cat.life_story %></p>
+```
+
+### link the 'index' and 'show' views!
+- in ```index.html.erb```, we can add links to the show pages of each cat
+```ruby
+<h1>meowtown</h1>
+
+<ul>
+  <% @cats.each do |cat| %>
+    <li>
+      <h2><%= cat.name %></h2>
+      <img src='<%=cat.image_url%>' />
+      <p>lives left: <%= cat.lives %></p>
+      <%= link_to('show this cat', cat_path(cat)) %>
+    </li>
+  <% end %>
+</ul>
+```
+- in ```show.html.erb```, add a 'back' button
+```
+<h1><%= @cat.name %></h1>
+
+<img src='<%= @cat.image_url %>' />
+
+<h2>Life Story:</h2>
+
+<p><%= @cat.life_story %></p>
+
+<%= link_to('back', cats_path) %>
+```
+
+### add '#new' action
+
+- write specs
+```ruby
+  describe "#new" do
+
+    before do
+      get :new
+    end
+
+    it { should respond_with(200) }
+    it { should render_template(:new) }
+
+  end
+```
+- create action in controller
+```ruby
+def new
+end
+```
+- create view, in ```views/cats/new.html.erb```
+```
+<h1>create a cat</h1>
+
+<%= form_for :cat do |f| %>
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :life_story %><br>
+    <%= f.text_area :life_story %>
+  </p>
+  <p>
+    <%= f.label :image_url %><br>
+    <%= f.text_field :image_url %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+<%= link_to('back', cats_path) %>
 ```
