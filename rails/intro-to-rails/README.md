@@ -343,7 +343,7 @@ end
 ### add #create action
 - we have a form, rendered by our new action. though, we currently have nowhere to submit that form to. we need to make our #create action
 - write specs
-```
+```ruby
   describe "#create" do
 
     context "if valid params" do
@@ -354,7 +354,10 @@ end
       end
 
       it { should respond_with(302) }
-      it { should redirect_to(cats_path) }
+      it "should redirect to the new cat's page" do
+        cat = Cat.find_by(@cat_params)
+        expect(response).to redirect_to("/cats/#{cat.id}")
+      end
       it "creates a new cat with specified params" do
         expect(Cat.find_by(@valid_params)).to be_truthy
       end
@@ -378,7 +381,7 @@ end
   end
 ```
 - create controller action
-```
+```ruby
   def create
     @cat = Cat.new(cat_params)
     if @cat.save
@@ -429,3 +432,182 @@ end
 
   end
 ```
+
+### link up your 'new cat' page 
+- in ```index.html.erb``` add a link to ```new.html.erb```
+```
+<h1>meowtown</h1>
+<%= link_to('make a new cat', new_cat_path) %>
+<ul>
+  <% @cats.each do |cat| %>
+    <li>
+      <h2><%= cat.name %></h2>
+      <img src='<%=cat.image_url%>' />
+      <p>lives left: <%= cat.lives %></p>
+      <%= link_to('show this cat', cat_path(cat)) %>
+    </li>
+  <% end %>
+</ul>
+```
+
+### add '#edit' action
+- this is going to render a form allowing us to edit an existing cat
+- write specs:
+```ruby
+  describe "#edit" do
+
+    before do
+      @cat = create(:cat)
+      get :edit, id: @cat.id
+    end
+
+    it { should respond_with(200) }
+    it { should render_template(:edit) }
+    it "should assign cat with specified id to @cat" do
+      expect(assigns(:cat)).to eq(@cat)
+    end
+
+  end
+```
+- build controller action
+```ruby
+  def edit
+    @cat = Cat.find(params[:id])
+  end
+```
+- create ```edit.html.erb```
+```ruby
+<h1>edit a cat</h1>
+
+<% if @cat.errors.any? %>
+    <ul>
+      <% @cat.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+<% end %>
+
+<%= form_for :cat, url: cat_path(@cat), method: :patch do |f| %>
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :life_story %><br>
+    <%= f.text_area :life_story %>
+  </p>
+  <p>
+    <%= f.label :image_url %><br>
+    <%= f.text_field :image_url %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+<%= link_to('back', cats_path) %>
+```
+
+### create an '#update' action for your edit form 
+- we'll make an #update action in our controller for the edit form to submit to:
+- write specs:
+```ruby
+  describe "#update" do
+
+    context "with valid params" do
+
+      before do
+        @cat = create(:cat)
+        @cat_params = attributes_for(:cat)
+        patch :update, { id: @cat.id, cat: @cat_params }
+      end
+
+      it { should respond_with(302) }
+      it { should redirect_to("/cats/#{@cat.id}")}
+      it "should update the attributes for cat" do
+        expect(Cat.find_by(@cat_params)).to be_truthy
+      end
+
+    end
+    
+    context "with invalid params" do
+
+      before do
+        @cat = create(:cat)
+        @invalid_cat_params = { name: "", life_story: "", image_url: "" }
+        patch :update, { id: @cat.id, cat: @invalid_cat_params }
+      end
+
+      it { should respond_with(400) }
+      it { should render_template(:edit) }
+      it "should not update the attributes for cat" do
+        expect(Cat.find_by(@invalid_cat_params)).to be_nil
+      end
+
+    end
+
+  end
+```
+- build controller action:
+```ruby
+  def update
+    @cat = Cat.find(params[:id])
+    if @cat.update(cat_params)
+      redirect_to @cat
+    else
+      render 'edit', status: 400
+    end
+  end
+```
+
+### link your 'edit' page to your 'index'
+- in ```index.html.erb```
+```
+<h1>meowtown</h1>
+<%= link_to('make a new cat', new_cat_path) %>
+<ul>
+  <% @cats.each do |cat| %>
+    <li>
+      <h2><%= cat.name %></h2>
+      <img src='<%=cat.image_url%>' />
+      <p>lives left: <%= cat.lives %></p>
+      <%= link_to('show this cat', cat_path(cat)) %>
+      <%= link_to('edit this cat', edit_cat_path(cat)) %>
+    </li>
+  <% end %>
+</ul>
+```
+### add cat dying process
+- write specs
+```ruby
+	describe "#show" do
+
+		before do
+      @cat = Cat.create(attributes_for(:cat))
+      allow(@cat).to receive(:lose_a_life!)
+      get :show, id: @cat.id
+    end
+
+    it { should respond_with(200) }
+    it { should render_template(:show) }
+    it "should assign cat with specified id to @cat" do
+      expect(assigns(:cat)).to eq(@cat)
+    end
+    it "should call cat's #lose_a_life! method" do
+      @cat.reload
+      expect(@cat.lives).to eq(8)
+    end
+
+	end
+```
+- add functionality to controller action
+```ruby
+	def show
+		@cat = Cat.find(params[:id])
+    @cat.lose_a_life!
+	end
+```
+
+### done 
+here's a summary of the code 
+https://gist.github.com/euglazer/cd358acb693e3daa5941
