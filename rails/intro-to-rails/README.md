@@ -580,9 +580,9 @@ end
 ### add cat dying process
 - write specs
 ```ruby
-	describe "#show" do
+  describe "#show" do
 
-		before do
+    before do
       @cat = Cat.create(attributes_for(:cat))
       allow(@cat).to receive(:lose_a_life!)
       get :show, id: @cat.id
@@ -598,14 +598,14 @@ end
       expect(@cat.lives).to eq(8)
     end
 
-	end
+end
 ```
 - add functionality to controller action
 ```ruby
-	def show
-		@cat = Cat.find(params[:id])
+  def show
+    @cat = Cat.find(params[:id])
     @cat.lose_a_life!
-	end
+  end
 ```
 
 ### done 
