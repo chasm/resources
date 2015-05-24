@@ -35,6 +35,12 @@ end
 require 'faker'
 ```
 ## install factory girl
+- add to gemfile
+```
+group :development, :test do
+  gem 'factory_girl_rails'
+end
+```
 - in rails helper, uncomment the following line:
 ```
 Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
