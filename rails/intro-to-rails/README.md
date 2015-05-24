@@ -1,60 +1,98 @@
-- we are going to build [meowtown](http://meowtown.herokuapp.com/)
-- what are the resources?
-	- cats
-- what should we be able to do with these resources?
-	- see all
-	- see one
-	- edit one
-	- create one
-	- delete one
+# intro to rails
+we are going to build [meowtown](http://meowtown.herokuapp.com/) with rails
 
-- first we need an app, with a postgresql database, and using rspec instead of rack::test:
+## create a rails app
 ```rails new meowtown --database=postgresql -T```
-- install rspec
+
+## install rspec 
 ```ruby
-	### in gemfile
-	group :development, :test do
-  	gem 'rspec-rails', '~> 3.0'
-	end
-```
-```
-### in command line:
-rails g rspec:install
-```
-- install shoulda-matchers
-```
-### in gemfile
-group :test do
-  gem 'shoulda-matchers', require: false
+### gemfile
+group :development, :test do
+	gem 'rspec-rails', '~> 3.0'
 end
 ```
-```
-### in rails_helper
+```rails g rspec:install```
+
+## install shoulda-matchers
+```ruby
+## gemfile
+group :test do
+	gem 'shoulda-matchers', require: false
+end
+
+## rails_helper
 require 'shoulda/matchers'
 ```
-- install faker
-```
+
+## install faker
+```ruby
 ### in gemfile
 group :test, :development do
 	gem 'faker'
 end
-```
-```
+
 ### in rails_helper
 require 'faker'
 ```
-
-- we need a cat model and corresponding migration now:
-```rails g model cat name:string life_story:text image_url:string```
-- ```rake db:migrate```, ```rake db:migrate RAILS_ENV=test```
-- write simple model specs
+## install factory girl
+- in rails helper, uncomment the following line:
 ```
+Dir[Rails.root.join('spec/support/**/*.rb')].each { |f| require f }
+```
+- paste the following in ```spec/support/factory_girl.rb```
+```ruby
+RSpec.configure do |config|
+  config.include FactoryGirl::Syntax::Methods
+end
+```
+- create a folder ```spec/factories```
+
+## create a cat model and migration
+- run: ```rails g model cat name:string life_story:text image_url:string```
+- edit migration
+```ruby
+class CreateCats < ActiveRecord::Migration
+  def change
+    create_table :cats do |t|
+      t.string :name
+      t.text :life_story
+      t.string :image_url
+      t.integer :lives, default: 9
+      
+      t.timestamps null: false
+    end
+  end
+end
+```
+- run ```rake db:migrate``` and ```rake db:migrate RAILS_ENV=test```
+
+## write tests for cat model
+- in ```spec/factories/cat.rb```
+```ruby
+FactoryGirl.define do
+
+	factory :cat do 
+
+		name Faker::Name.name 
+		life_story Faker::Lorem.paragraph 
+		image_url Faker::Avatar.image
+
+		factory :cat_with_1_life do
+			lives 1
+		end
+
+	end
+
+end
+```
+- in ```spec/models/cat_spec.rb```
+```ruby
 require 'rails_helper'
 
 RSpec.describe Cat, type: :model do
 
-	let(:healthy_cat) { Cat.create(name: Faker::Name.name, life_story: Faker::Lorem.paragraph, image_url: Faker::Avatar.image) }
-	let(:almost_dead_cat) { Cat.create(name: Faker::Name.name, life_story: Faker::Lorem.paragraph, image_url: Faker::Avatar.image, lives: 1) }
+	let(:healthy_cat) { create(:cat) }
+	let(:almost_dead_cat) { create(:cat_with_1_life) }
 
 	describe "fields" do
 		it { should have_db_column(:name).of_type(:string) }
@@ -88,8 +126,8 @@ RSpec.describe Cat, type: :model do
 
 end
 ```
-- and the model itself:
-```
+- in ```app/models/cat.rb```
+```ruby
 class Cat < ActiveRecord::Base
 
 	validates :name, presence: true
@@ -107,19 +145,20 @@ class Cat < ActiveRecord::Base
 
 end
 ```
-- and now we need a controller, lets start with the 'index' action
-```rails g controller cats```
-- to use our controller action, we need a route to that controller. a url and http verb to trigger the action.
-- a proper restful route for an index action on the cats resource would be ```get '/cats', to: 'cats#index'```
-- we'll put this in our routes file
-```
+## generate CatsController
+- run: ```rails g controller cats```
+
+### add 'index' action
+- create a route for the action in ```config/routes.rb```
+```ruby
 get '/cats', to: 'cats#index'
 ```
-- and run ```rake routes```
-- let's also make this the root page, the one that people land on when they visit our site
-```root to: 'cats#index'```
+- we'll also make this route the 'root route' of our application
+```ruby
+root to: 'cats#index'
+```
 
-- and some controller tests:
+- add controller specs:
 ```
 require 'rails_helper'
 
@@ -142,7 +181,7 @@ RSpec.describe CatsController, type: :controller do
 
 end
 ```
-and controller code:
+add controller code:
 ```
 class CatsController < ApplicationController
 
@@ -152,11 +191,4 @@ class CatsController < ApplicationController
 
 end
 ```
-and add a view called ```index.html.erb``` to /views/cats
-
-- now #show, route, controller tests, controller action, view
-
-
-
-
-
+add view: ```/views/cats/index.html.erb```
