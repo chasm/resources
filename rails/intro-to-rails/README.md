@@ -1,4 +1,4 @@
-- we want to build meowtown: 
+- we are going to build [meowtown](http://meowtown.herokuapp.com/)
 - what are the resources?
 	- cats
 - what should we be able to do with these resources?
