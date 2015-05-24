@@ -577,7 +577,7 @@ end
 
 <p><%= @cat.life_story %></p>
 
-<%= link_to('back', edit_cats_path) %>
+<%= link_to('edit this cat', edit_cat_path(@cat)) %>
 
 <%= link_to('back', cats_path) %>
 ```
