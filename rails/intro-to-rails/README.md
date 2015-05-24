@@ -165,9 +165,9 @@ require 'rails_helper'
 RSpec.describe CatsController, type: :controller do
 
 	describe "#index" do
-		
+
 		before do 
-			5.times { Cat.create(name: Faker::Name.name, life_story: Faker::Lorem.paragraph, image_url: Faker::Avatar.image) }
+			5.times { Cat.create(attributes_for(:cat)) }
 			get :index
 		end
 
@@ -192,3 +192,32 @@ class CatsController < ApplicationController
 end
 ```
 add view: ```/views/cats/index.html.erb```
+
+### add '#show' action
+- create route:
+```ruby
+  get '/cats/:id', to: 'cats#show'
+```
+- controller specs
+```ruby
+	describe "#show" do
+
+		before do
+			@cat = Cat.create(attributes_for(:cat))
+			get :show, id: @cat.id
+		end
+
+		it { should respond_with(200) }
+		it { should render_template(:show) }
+		it "should assign cat with specified id to @cat" do
+			expect(assigns(:cat)).to eq(@cat)
+		end
+
+	end
+```
+- controller code
+```
+	def show
+		@cat = Cat.find(params[:id])
+	end
+```
