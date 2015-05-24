@@ -566,22 +566,20 @@ end
   end
 ```
 
-### link your 'edit' page to your 'index'
-- in ```index.html.erb```
+### link your 'edit' page to your 'show' page
+- in ```show.html.erb```
 ```
-<h1>meowtown</h1>
-<%= link_to('make a new cat', new_cat_path) %>
-<ul>
-  <% @cats.each do |cat| %>
-    <li>
-      <h2><%= cat.name %></h2>
-      <img src='<%=cat.image_url%>' />
-      <p>lives left: <%= cat.lives %></p>
-      <%= link_to('show this cat', cat_path(cat)) %>
-      <%= link_to('edit this cat', edit_cat_path(cat)) %>
-    </li>
-  <% end %>
-</ul>
+<h1><%= @cat.name %></h1>
+
+<img src='<%= @cat.image_url %>' />
+
+<h2>Life Story:</h2>
+
+<p><%= @cat.life_story %></p>
+
+<%= link_to('back', edit_cats_path) %>
+
+<%= link_to('back', cats_path) %>
 ```
 ### add cat dying process
 - write specs
