@@ -297,7 +297,7 @@ end
 ```
 
 ### add '#new' action
-
+- this is going to render a form allowing us to create a new cat
 - write specs
 ```ruby
   describe "#new" do
@@ -320,7 +320,7 @@ end
 ```
 <h1>create a cat</h1>
 
-<%= form_for :cat do |f| %>
+<%= form_for :cat, url: cats_path do |f| %>
   <p>
     <%= f.label :name %><br>
     <%= f.text_field :name %>
@@ -339,4 +339,93 @@ end
 <% end %>
 
 <%= link_to('back', cats_path) %>
+```
+### add #create action
+- we have a form, rendered by our new action. though, we currently have nowhere to submit that form to. we need to make our #create action
+- write specs
+```
+  describe "#create" do
+
+    context "if valid params" do
+
+      before do
+        @cat_params = attributes_for(:cat)
+        post :create, { cat: @cat_params }
+      end
+
+      it { should respond_with(302) }
+      it { should redirect_to(cats_path) }
+      it "creates a new cat with specified params" do
+        expect(Cat.find_by(@valid_params)).to be_truthy
+      end
+
+    end
+
+    context "if invalid params" do
+
+      before do 
+        post :create, { cat: {name: "test"} }
+      end
+
+      it { should respond_with(400) }
+      it { should render_template(:new) }
+      it "should not create a new cat" do
+        expect(Cat.find_by_name("test")).to be_nil
+      end
+
+    end
+
+  end
+```
+- create controller action
+```
+  def create
+    @cat = Cat.new(cat_params)
+    if @cat.save
+      redirect_to cats_path
+    else
+      render 'new', status: 400
+    end
+  end
+
+  private
+
+    def cat_params
+      params.require(:cat).permit(:name, :life_story, :image_url)
+    end
+```
+- visit 'localhost:3000/cats/new' and attempt to make a new cat. 
+- if we ever try to make a cat incorrectly, we'd like to have some error messages to let us know what we did wrong. those error messages are still stored in our unsaved @cat object, so we can access them in the view.
+- in ```new.html.erb```, we'll add the following
+```
+<% if @cat.errors.any? %>
+    <ul>
+      <% @cat.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+<% end %>
+```
+- great, now we'll see error messages if any exist. But what if we visit the 'new' page for the first time? There is no cat object saved in @cat. The view will throw an error. 
+- So, in our controller's new action we'll add:
+```ruby
+  def new
+    @cat = Cat.new
+  end
+```
+- and we'll update our specs:
+```ruby 
+  describe "#new" do
+
+    before do
+      get :new
+    end
+
+    it { should respond_with(200) }
+    it { should render_template(:new) }
+    it "should assign an instance of Cat to @cat" do
+      expect(assigns(:cat)).to be_a(Cat)
+    end
+
+  end
 ```
