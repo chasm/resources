@@ -73,7 +73,7 @@ end
 - run ```rake db:migrate``` and ```rake db:migrate RAILS_ENV=test```
 
 ## write tests for cat model
-- in ```spec/factories/cat.rb```
+- in ```spec/factories/cats.rb```
 ```ruby
 FactoryGirl.define do
 
