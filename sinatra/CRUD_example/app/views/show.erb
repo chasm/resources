@@ -1,0 +1,6 @@
+<h2><%= @student.name %></h2>
+<p><%= @student.biography %></p>
+<form action="/students/<%= @student.id %>" method="post" >
+  <input type="hidden" value="delete" name="_method" />
+  <input type="submit" value="Delete" name="delete" />
+</form>
