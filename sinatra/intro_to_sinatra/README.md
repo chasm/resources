@@ -1,5 +1,7 @@
 # Outline of Lecture:
 
+[code-example](./code-example)
+
 - Intro Sinatra and Sinatra skeleton
   - Good stepping-stone to Rails
   - Repos will come with Sinatra Skeleton and they can also be cloned from the Sinatra Skeleton repository (search within your organisation)
