@@ -47,6 +47,8 @@ https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails
 
 ## Enabling Login with Facebook using Omniauth
 
+- below is a brief, practical overview. for more details, you can visit: https://github.com/plataformatec/devise/wiki/OmniAuth:-Overview
+
 - visit https://developers.facebook.com/ and create a new app.
   - copy that app's 'app_id' and 'app_secret' somewhere
   - under settings > advanced > OAuth settings > valid Oauth redirect URIs, add ```http://localhost:3000/```
