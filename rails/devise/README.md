@@ -1,6 +1,5 @@
 # Devise + Omniauth Lecture Notes
 
-Lecture Notes:
 - visit [Devise's Github](https://github.com/plataformatec/devise) for a thorough overview of available modules.
 - visit the [wiki](https://github.com/plataformatec/devise/wiki) for additional information.
 
