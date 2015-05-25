@@ -1,0 +1,29 @@
+<h1>create a cat</h1>
+
+<% if @cat.errors.any? %>
+    <ul>
+      <% @cat.errors.full_messages.each do |msg| %>
+        <li><%= msg %></li>
+      <% end %>
+    </ul>
+<% end %>
+
+<%= form_for :cat, url: cats_path do |f| %>
+  <p>
+    <%= f.label :name %><br>
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :life_story %><br>
+    <%= f.text_area :life_story %>
+  </p>
+  <p>
+    <%= f.label :image_url %><br>
+    <%= f.text_field :image_url %>
+  </p>
+  <p>
+    <%= f.submit %>
+  </p>
+<% end %>
+
+<%= link_to('back', cats_path) %>
