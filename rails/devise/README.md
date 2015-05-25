@@ -44,3 +44,72 @@ Lecture Notes:
 
 - For controller testing with devise, check out this link:
 https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
+
+## Enabling Login with Facebook using Omniauth
+
+- visit https://developers.facebook.com/ and create a new app.
+  - copy that app's 'app_id' and 'app_secret' somewhere
+  - under settings > advanced > OAuth settings > valid Oauth redirect URIs, add ```http://localhost:3000/```
+
+- add 'omniauth-facebook' to Gemfile
+```ruby
+gem 'omniauth-facebook'
+```
+
+- run:
+```
+rails g migration AddColumnsToUsers provider uid
+rake db:migrate
+```
+
+- add to ```config/initializers/devise.rb```
+```ruby
+config.omniauth :facebook, "YOUR_APP_ID", "YOUR_APP_SECRET"
+```
+
+- add to ```app/models/user.rb```
+```ruby
+devise :omniauthable, :omniauth_providers => [:facebook]
+```
+
+- modify ```config/routes.rb``` to include:
+```ruby
+devise_for :users, :controllers => { :omniauth_callbacks => "users/omniauth_callbacks" }
+```
+
+- create file ```app/controllers/users/omniauth_callbacks_controller.rb``` and add to it:
+```ruby 
+class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
+  def facebook
+    # You need to implement the method below in your model (e.g. app/models/user.rb)
+    @user = User.from_omniauth(request.env["omniauth.auth"])
+
+    if @user.persisted?
+      sign_in_and_redirect @user, :event => :authentication #this will throw if @user is not activated
+      set_flash_message(:notice, :success, :kind => "Facebook") if is_navigational_format?
+    else
+      session["devise.facebook_data"] = request.env["omniauth.auth"]
+      redirect_to new_user_registration_url
+    end
+  end
+end
+```
+
+- in ```app/models/user.rb``` add:
+```ruby
+def self.from_omniauth(auth)
+  where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+    user.email = auth.info.email
+    user.password = Devise.friendly_token[0,20]
+  end
+end
+def self.new_with_session(params, session)
+  super.tap do |user|
+    if data = session["devise.facebook_data"] && session["devise.facebook_data"]["extra"]["raw_info"]
+      user.email = data["email"] if user.email.blank?
+    end
+  end
+end
+```
+
+### done
