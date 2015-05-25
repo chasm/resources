@@ -1,0 +1,25 @@
+<h1>Students</h1>
+
+<p>Hey, we also have <a href="/cats" alt="cats">CATS</a></p>
+
+<h2>New Student</h2>
+<form action="/" method="post">
+  <p>
+    <label for="name">Name</label>
+    <input type="text" name="name" />
+  </p>
+  <p>
+    <label for="name">Biography</label>
+    <input type="text" name="biography" />
+  </p>
+  <input type="submit" value="Add Student" />
+</form>
+
+<ul>
+  <% @students.each do |student| %>
+    <li>
+      <strong><%= student.name %></strong><br />
+      <%= student.biography %>
+    </li>
+  <% end %>
+</ul>
