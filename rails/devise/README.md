@@ -19,7 +19,7 @@ Lecture Notes:
 </body>
 ```
 - run ```rails generate devise <model_name>```
-  - <model_name> is a placeholder for whatever you want to name your model. typically, this is 'user' or 'admin'.   
+  - model_name is a placeholder for whatever you want to name your model. typically, this is 'user' or 'admin'.   
   - this sets up a user migration, user model, and tons of ready-to-use routes for your user.
 
 - run ```rake db:create``` and ```rake db:migrate```. 
