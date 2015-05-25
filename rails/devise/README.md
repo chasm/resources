@@ -1,42 +1,46 @@
 # Devise
 
 Lecture Notes:
+- visit [Devise's Github](https://github.com/plataformatec/devise) for a thorough overview of available modules.
+- visit the [wiki](https://github.com/plataformatec/devise/wiki) for additional information.
 
-- Visit [Devise's Github](https://github.com/plataformatec/devise)
-  - speak briefly on the available modules, their value, and so on.
-  - point out the [wiki](https://github.com/plataformatec/devise/wiki)
-  - Run through the "Getting Started" section of Devise's Github.
-    - open the [example rails app](./devise-setup-example). This is a clean slate that you can do an example devise installation/setup on.
-    - add ```gem 'devise'``` to the gemfile and bundle
-    - run ```rails generate devise:install``` and show the files/folders that were created
-    - follow the instructions in devise's post-installation terminal output. emphasize that this printout needs to be read.
-      - add ```config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }``` to /config/environments/development.rb
-      - add ```root to: "pages#home``` to routes.rb.
-        - mention that we are doing this so that when a user successfully signs in, devise knows where to redirect to.
-      - add flash messages
-        ```
-        <p class="notice"><%= notice %></p>
-        <p class="alert"><%= alert %></p>
-        ```
-        to application.html.erb, in the body.
-      - ignore step 4, because we're using rails 4.2.0.
-      - skip step 5, but mention that since devise's default views for the user signin/signup pages are quite ugly, we can see + edit the views if we want by running ```rails g devise:views```
-    - go back to 'getting started' on devise's github page.
-      - run ```rails generate devise user```
-        - explain that MODEL is a placeholder for the name of your model. you can name your model whatever you want, but since we're commonly creating a 'user' model with devise, we name it 'user'.
-      - talk about devise's helpers, namely, ```before_action :authenticate_user!```, ```user_signed_in?```, and ```current_user```.
-  - now that everything is set up, run ```rake db:create``` and ```rake db:migrate```.
-  - open the migration, model, and routes files for the devise user, and show them to the students. Explain.
-  - create a pages controller, with an action "home". Add a corresponding view called "home.html.erb".
-    - in pages#home, put
-      ```redirect_to '/users/sign_in' unless user_signed_in?```
-    - in home.html.erb, put
+## [Getting Started](https://github.com/plataformatec/devise#getting-started)
+- add ```gem 'devise'``` to the gemfile and bundle
+- run ```rails generate devise:install```
+- add ```config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }``` to ```/config/environments/development.rb```
+- add ```root to: "<controller_name>#<action_name>``` to routes.rb.
+  - we set a 'root' so that devise knows where to redirect to, if the user signs in or signs up correctly. for this example, we'll use ```'pages#home'```
+- add flash messages to the body of ```application.html.erb```
+```
+<body>
+  <p class="notice"><%= notice %></p>
+  <p class="alert"><%= alert %></p>
+  <%= yield %>
+</body>
+```
+- run ```rails generate devise <model_name>```
+  - <model_name> is a placeholder for whatever you want to name your model. typically, this is 'user' or 'admin'.   
+  - this sets up a user migration, user model, and tons of ready-to-use routes for your user.
+
+- run ```rake db:create``` and ```rake db:migrate```. 
+
+- now, anywhere in our code, we can use the following devise helpers:
+```ruby 
+  before_action :authenticate_user!  # add this to any controller, and it will require a user session to access any of the controller's actions
+  
+  user_signed_in? # this returns true if a user is stored in the session, otherwise returns false
+  
+  current_user # returns the user object whose id is stored in the session
+```
+
+- create a pages controller, with an action "home". Add a corresponding view called "home.html.erb".
+  - at the top of the controller put: ```before_action :authenticate_user!```
+  - in home.html.erb, put
       ```
         <h1><%=current_user.email%></h1>
         <%=button_to('sign out', destroy_user_session_path, method: 'delete')%>
       ```
-  - start up a server, and walk through the views that we've created.
+- run ```rails s``` and visit ```localhost:3000```
 
-- For controller testing with devise, refer them to this link:
+- For controller testing with devise, check out this link:
 https://github.com/plataformatec/devise/wiki/How-To:-Test-controllers-with-Rails-3-and-4-%28and-RSpec%29
-  - will need to briefly explain the usage of factory girl here. (by default devise only requires a user to have an email and password)
