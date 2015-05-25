@@ -113,5 +113,36 @@ def self.new_with_session(params, session)
   end
 end
 ```
+- restart your server and visit ```localhost:3000```
+
+- if we want, we can also take our name and image from our facebook profile, and add them to our user. to do this, we'll first create 'name' and 'image_url' fields for our users.
+  - create a migration
+  ```rails g migration AddNameAndImageUrlToUsers```
+  - in the new migration, put:
+  ```ruby
+  class AddNameAndImageUrlToUsers < ActiveRecord::Migration
+    def change
+      add_column :users, :name, :string
+      add_column :users, :image_url, :string
+    end
+  end
+  ```
+  - in the user model, add:
+  ```ruby
+  def self.from_omniauth(auth)
+    where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
+      user.email = auth.info.email
+      user.password = Devise.friendly_token[0,20]
+      user.name = auth.info.name
+      user.image_url = auth.info.image
+    end
+  end
+  ```
+- now, when a user signs in or signs up with facebook, their facebook name and image_url will be add to their user model. We can display this information on our 'home' page like so:
+```ruby
+  <h1>welcome <%=current_user.name%></h1>
+  <img src='<%= current_user.image_url %>' />
+  <%=button_to('sign out', destroy_user_session_path, method: 'delete')%>
+```
 
 ### done
