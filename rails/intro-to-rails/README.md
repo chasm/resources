@@ -391,7 +391,7 @@ end
   def create
     @cat = Cat.new(cat_params)
     if @cat.save
-      redirect_to cats_path
+      redirect_to cat_path(@cat)
     else
       render 'new', status: 400
     end
