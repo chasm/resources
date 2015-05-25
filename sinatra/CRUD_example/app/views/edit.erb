@@ -1,0 +1,10 @@
+<h1>Edit <%= @student.name %></h1>
+
+<form action="/students/<%= @student.id %>" method="post" >
+  <input type="hidden" value="put" name="_method" />
+  <label for="name">Name</label>
+  <input type="text" value=<%= @student.name %> name="name" />
+  <label for="name">Biography</label>
+  <input type="text" value=<%= @student.biography %> name="biography" />
+  <input type="submit" value="Update Student" />
+</form>
