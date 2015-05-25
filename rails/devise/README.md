@@ -35,11 +35,11 @@ Lecture Notes:
 
 - create a pages controller, with an action "home". Add a corresponding view called "home.html.erb".
   - at the top of the controller put: ```before_action :authenticate_user!```
-  - in home.html.erb, put
-      ```
-        <h1><%=current_user.email%></h1>
-        <%=button_to('sign out', destroy_user_session_path, method: 'delete')%>
-      ```
+  - in home.html.erb, put:
+  ```
+    <h1><%=current_user.email%></h1>
+    <%=button_to('sign out', destroy_user_session_path, method: 'delete')%>
+  ```
 - run ```rails s``` and visit ```localhost:3000```
 
 - For controller testing with devise, check out this link:
