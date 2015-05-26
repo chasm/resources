@@ -1,0 +1,14 @@
+<h1>meowtown</h1>
+
+<%= link_to('make a new cat', new_cat_path) %>
+
+<ul>
+  <% @cats.each do |cat| %>
+    <li>
+      <h2><%= cat.name %></h2>
+      <img src='<%=cat.image_url%>' />
+      <p>lives left: <%= cat.lives %></p>
+      <%= link_to('show cat', cat_path(cat) ) %>
+    </li>
+  <% end %>
+</ul>
