@@ -40,7 +40,6 @@
     # 2. find corresponding 'roman' for that 'arabic'
     # 3. add that 'roman' to 'roman_numeral'
     # 4. subtract 'arabic' from number
-end
 
 # number = 17
 # roman_numeral = ""
