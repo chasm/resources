@@ -25,15 +25,21 @@
   rules:
     - numbers are additive (III -> 1 + 1 + 1 = 3)
     - large numbers on the left, small numbers on the right (8 -/> IIIV, 8 -> VIII)
+  
+  also:
+    - for now, we will use 'old' roman numerals, where 4 is represented as IIII, not IV, and 9 is represented as VIIII, not IX, etc.
   ```
+  
 - our roman numeral decoding algorithm in 'human' terms
-```ruby
-def to_roman(number)
-  # repeat until number is 0
-    1. find largest 'arabic' that we're able to fit inside of 'number'
-    2. find corresponding 'roman' for that 'arabic'
-    3. add that 'roman' to 'roman_numeral'
-    4. subtract 'arabic' from number
+  
+```
+# given a 'number'
+
+  # we repeat the following process until 'number' is 0
+    # 1. find largest 'arabic' that we're able to fit inside of 'number'
+    # 2. find corresponding 'roman' for that 'arabic'
+    # 3. add that 'roman' to 'roman_numeral'
+    # 4. subtract 'arabic' from number
 end
 
 # number = 17
@@ -245,6 +251,19 @@ end
 - and a slight refactor:
 ```ruby
 $cipher = { 1000 => "M", 500 => "D", 100 => "C", 50 => "L", 10 => "X", 5 => "V", 1 => "I" }
+
+def to_roman(number)
+  roman_numeral = ""
+  $cipher.each do |arabic, roman|
+    roman_numeral += arabic / number
+    number -= arabic / number
+  end
+  roman_numeral
+end
+```
+- what about 'actual' roman numerals, where 4 is IV and IX is 9, etc.? turns out this is really easy to accomodate for:
+```ruby
+$cipher = {1000 => "M", 900 => "CM", 500 => "D", 400 => "CD", 100 => "C", 90 => "XC", 50 => "L", 40 => "XL", 10 => "X", 9 => "IX", 5 => "V", 4 => "IV", 1 => "I"}
 
 def to_roman(number)
   roman_numeral = ""
