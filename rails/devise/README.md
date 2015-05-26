@@ -145,3 +145,5 @@ end
 ```
 
 ### done
+
+[code-example](./devise-setup-example)
