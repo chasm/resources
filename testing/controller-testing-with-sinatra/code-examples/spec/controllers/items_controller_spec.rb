@@ -76,7 +76,8 @@ describe "ItemsController" do
       end
 
       it "redirects to /items" do
-        expect(last_response.location).to include('/items')
+        full_url = last_response.original_headers["Location"]
+        expect(URI(full_url).path).to eq('/items')
       end
 
     end
@@ -96,7 +97,8 @@ describe "ItemsController" do
       end
 
       it "redirects to /items" do
-        expect(last_response.location).to include('/items')
+        full_url = last_response.original_headers["Location"]
+        expect(URI(full_url).path).to eq('/items')
       end
 
       it "stores list of errors in the session" do
