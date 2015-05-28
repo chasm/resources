@@ -75,8 +75,28 @@ class Review < ActiveRecord::Base
   belongs_to :item
 end
 ```
-- - -
+### and a seeds file
+```ruby
+require 'faker'
 
+Category.destroy_all
+Item.destroy_all
+
+5.times do 
+  Category.create(title: Faker::Commerce.department(1, true))
+end
+
+Category.all.each do |category|
+  rand(5..20).times do 
+    category.items.create(name: Faker::Commerce.product_name, description: Faker::Lorem.paragraph, price: Faker::Commerce.price, inventory: rand(1..100))
+  end
+end
+
+Item.all.each do |item|
+  item.reviews.create(title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph, rating: rand(1..5))  
+end
+```
+- - -
 our public api will exist to be consumed by some fancy front-end javascript framework. 
 
 For now, we want folx to be able to:
@@ -89,11 +109,11 @@ For now, we want folx to be able to:
 we can translate the above into RESTful rails routes:
 ```ruby
 Rails.application.routes.draw do
-  get '/items', to: 'items#index'
-  get '/categories', to: 'categories#index'
-  get '/categories/:category_id', to: 'categories#show'
-  get '/items/:item_id', to: 'items#show'
-  post '/items/:item_id/reviews', to: 'reviews#create'
+  get '/items', to: 'items#index', as: 'items'
+  get '/categories', to: 'categories#index', as: 'categories'
+  get '/categories/:category_id', to: 'categories#show', as: 'category'
+  get '/items/:item_id', to: 'items#show', as: 'item'
+  post '/items/:item_id/reviews', to: 'reviews#create', as: 'item_reviews'
+end
 ```
-    
-  - - -
+- - -
