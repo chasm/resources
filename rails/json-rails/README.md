@@ -93,7 +93,9 @@ Category.all.each do |category|
 end
 
 Item.all.each do |item|
-  item.reviews.create(title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph, rating: rand(1..5))  
+  rand(1..15).times do
+    item.reviews.create(title: Faker::Lorem.sentence, body: Faker::Lorem.paragraph, rating: rand(1..5))  
+  end
 end
 ```
 - - -
