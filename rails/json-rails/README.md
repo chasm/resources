@@ -279,3 +279,46 @@ def show
   end
 end
 ```
+
+#### GET '/api/v1/items' - api/v1/items#index
+when we display a list of all items on the site, we may want to include the category for each item. we can do this again with the ```include``` option.
+```ruby
+  def index
+    render json: Item.all.as_json(
+      except: [:created_at, :updated_at, :category_id],
+      include: {
+        category: { only: [:id, :title] }
+      }
+    )
+  end
+```
+but when we are getting a quick birds eye view of the all the items, maybe we also want to see their average rating and the body of their most recent review.
+
+we can start by building methods for the ```Item``` model:
+```ruby 
+class Item < ActiveRecord::Base
+  belongs_to :category
+  has_many :reviews, dependent: :destroy
+
+  def average_rating
+    ratings = self.reviews.map { |review| review.rating }
+    return ratings.reduce(:+) / ratings.length
+  end
+
+  def latest_review
+    return self.reviews.order(:created_at).last.body
+  end
+end
+```
+and in our controller, we can use ```.as_json```'s ```methods``` option to include the return values of the methods in our json response
+```ruby
+def index
+  render json: Item.all.as_json(
+    except: [:created_at, :updated_at, :category_id],
+    methods: [:average_rating, :latest_review],
+    include: {
+      category: { only: [:id, :title] }
+    }
+  )
+end
+```
