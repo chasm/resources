@@ -216,3 +216,66 @@ class Api::V1::ReviewsController < Api::V1::ApiController
   end
 end
 ```
+
+- - -
+
+now that our controllers have been created, we can start working on the actions
+
+#### GET '/api/v1/categories' - api/v1/categories#index
+```ruby
+def index
+  render json: Category.all
+end
+```
+this will render all our categories as json. perfect. but what if we don't care about the timestamps? 
+
+we can always remove fields from our json response using the ```.as_json``` method with the ```except``` option
+```ruby
+def index
+  render json: Category.all.as_json(except: [:created_at, :updated_at])
+end
+```
+
+#### GET '/api/v1/categories/:id' - api/v1/categories#show
+
+when we show a category, we probably also want to show a list of its items as well.
+
+we can do this with ```.as_json```'s ```include``` option
+```ruby
+def show
+  category = Category.find_by_id(params[:id])
+  render json: category.as_json(
+    except: [:created_at, :updated_at], 
+    include: :items
+  )
+end
+```
+we can remove any unnecessary or redundant fields from our items like so:
+```ruby 
+def show
+  category = Category.find_by_id(params[:id])
+  render json: category.as_json(
+    except: [:created_at, :updated_at], 
+    include: { 
+     items: { except: [:created_at, :updated_at, :category_id] } 
+    }
+  )
+end
+```
+what if a bad request is made?
+```ruby
+def show
+  if category = Category.find_by_id(params[:id])
+    render json: category.as_json(
+      except: [:created_at, :updated_at], 
+      include: { 
+       items: { except: [:created_at, :updated_at, :category_id] } 
+      }
+    )
+  else 
+    render status: 404, json: { 
+      error: 'requested category does not exist' 
+    }
+  end
+end
+```
