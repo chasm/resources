@@ -322,3 +322,82 @@ def index
   )
 end
 ```
+
+#### GET '/api/v1/items/:id' - api/v1/items#show
+
+when we show a single item, we probably also want to show its category and reviews, as well as its average rating. we also want to handle bad requests, if they were to happen. 
+
+following patterns from before:
+```ruby
+def show
+  if item = Item.find_by_id(params[:id])
+    render json: item.as_json(
+      except: [:created_at, :updated_at, :category_id],
+      methods: [:average_rating],
+      include: {
+        category: { only: [:id, :title] },
+        reviews: { except: [:updated_at, :item_id] }
+      }
+    )
+  else 
+    render status: 404, json: { error: 'requested item does not exist' }
+  end
+end
+```
+
+#### POST '/api/v1/items/:item_id/reviews' - api/v1/reviews#create
+
+in our imaginary marketplace, reviews cannot be created unless they have a body, and a rating between 1 and 5.
+
+our model, then, looks like this:
+```ruby
+class Review < ActiveRecord::Base
+  belongs_to :item
+  validates :body, presence: true
+  validates :rating, presence: true
+  validates_inclusion_of :rating, :in => 1..5
+end
+```
+
+if someone tries to create a review with improper parameters, we need to catch that, and inform them what they've done wrong. If they did everything correctly, we probably just want to return their newly created review in our response:
+
+```ruby
+class Api::V1::ReviewsController < Api::V1::ApiController  
+  def create
+    review = item.reviews.new(review_params)
+    if review.save
+      render json: review.as_json(except: [:updated_at, :item_id])
+    else 
+      render status: 400, json: { errors: review.errors.full_messages }
+    end
+  end
+
+  private 
+    def review_params
+      params.require(:review).permit(:title, :body, :rating)
+    end
+end
+```
+what if they try to post a review to an item that doesn't exist?
+```ruby
+class Api::V1::ReviewsController < Api::V1::ApiController  
+  def create
+    unless item = Item.find_by_id(params[:item_id])
+      render status: 404, json: { error: 'requested item does not exist' }
+    end
+    review = item.reviews.new(review_params)
+    if review.save
+      render json: review.as_json(except: [:updated_at, :item_id])
+    else 
+      render status: 400, json: { errors: review.errors.full_messages }
+    end
+  end
+
+  private 
+    def review_params
+      params.require(:review).permit(:title, :body, :rating)
+    end
+end
+```
+
+#### and we're done! :beer:
