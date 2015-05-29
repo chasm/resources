@@ -113,8 +113,8 @@ our routes:
 Rails.application.routes.draw do
   get '/items', to: 'items#index', as: 'items'
   get '/categories', to: 'categories#index', as: 'categories'
-  get '/categories/:category_id', to: 'categories#show', as: 'category'
-  get '/items/:item_id', to: 'items#show', as: 'item'
+  get '/categories/:id', to: 'categories#show', as: 'category'
+  get '/items/:id', to: 'items#show', as: 'item'
   post '/items/:item_id/reviews', to: 'reviews#create', as: 'item_reviews'
 end
 ```
