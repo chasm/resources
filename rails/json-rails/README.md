@@ -20,7 +20,7 @@ this marketplace will have the following resources:
 
 our categories have many items, and our items have many reviews.
 
-### our migrations
+our migrations
 ```ruby
 class CreateCategories < ActiveRecord::Migration
   def change
@@ -58,7 +58,7 @@ class CreateReviews < ActiveRecord::Migration
   end
 end
 ```
-### and models
+and models
 ```ruby
 class Category < ActiveRecord::Base
   has_many :items
@@ -75,7 +75,7 @@ class Review < ActiveRecord::Base
   belongs_to :item
 end
 ```
-### and a seeds file
+and a seeds file
 ```ruby
 require 'faker'
 
@@ -101,14 +101,14 @@ end
 - - -
 our public api will exist to be consumed by some fancy front-end javascript framework. 
 
-For now, we want folx to be able to:
+for now, we want folx to be able to:
   - see a list of all items
   - see a list of our categories 
   - see a category, and all of its items
   - see a single item, and all of its reviews
   - create a review for an item
   
-we can translate the above into RESTful rails routes:
+our routes:
 ```ruby
 Rails.application.routes.draw do
   get '/items', to: 'items#index', as: 'items'
@@ -119,3 +119,100 @@ Rails.application.routes.draw do
 end
 ```
 - - -
+our routes refactored:
+```ruby
+resources :categories, only: [:index, :show]
+resources :items, only: [:index, :show] do
+  resources :reviews, only: :create
+end
+```
+our routes namespaced:
+```ruby
+Rails.application.routes.draw do
+  namespace :api do 
+    namespace :v1 do
+      resources :categories, only: [:index, :show]
+      resources :items, only: [:index, :show] do
+        resources :reviews, only: :create
+      end
+    end
+  end
+end
+```
+- - -
+our routes are currently mapped to non-existent controllers. 
+
+let's bring those controllers into existence:
+
+```
+rails g controller api/v1/categories index show --skip-routes --no-helper --no-template-engine --no-assets
+rails g controller api/v1/items index show --skip-routes --no-helper --no-template-engine --no-assets
+rails g controller api/v1/reviews create --skip-routes --no-helper --no-template-engine --no-assets
+```
+
+let's make the routes we've made so far completely public. no authenticity token will be needed to hit these routes.
+
+we can do this by adding ```skip_before_filter :verify_authenticity_token``` to all our controllers.
+
+```ruby
+class Api::V1::CategoriesController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+  
+  def index
+  end
+
+  def show
+  end
+end
+```
+```ruby
+class Api::V1::ItemsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+  
+  def index
+  end
+
+  def show
+  end
+end
+```
+```ruby
+class Api::V1::ReviewsController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+  
+  def create
+  end
+end
+```
+or ... we can put it in an 'Api::V1::ApiController' and have our other controllers inherit from it.
+
+```rails g controller api/v1/api --no-helper --no-template-engine --no-assets```
+```ruby
+class Api::V1::ApiController < ApplicationController
+  skip_before_filter :verify_authenticity_token
+end
+```
+```ruby
+class Api::V1::CategoriesController < Api::V1::ApiController
+  def index
+  end
+
+  def show
+  end
+end
+```
+```ruby
+class Api::V1::ItemsController < Api::V1::ApiController
+  def index
+  end
+
+  def show
+  end
+end
+```
+```ruby
+class Api::V1::ReviewsController < Api::V1::ApiController
+  def create
+  end
+end
+```
