@@ -1,17 +1,20 @@
+require 'sinatra/json'
+
 get '/' do
   erb :index
 end
 
 get '/cats' do
-  Cat.all.to_json
+  json Cat.all
 end
 
 post '/cats' do
   name = params[:name]
   product = params[:product]
-  if name == "chairvan"
+  if name == "chairvan" && product == "davis"
     status 400
   else
-    Cat.create(name: params[:name], product: params[:product])
+    @cat = Cat.create(name: params[:name], product: params[:product])
   end
+  json @cat
 end

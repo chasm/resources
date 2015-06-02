@@ -5,8 +5,7 @@ $(document).ready(function() {
     $.ajax({
       type : 'GET',
       url : '/cats',
-      success : function(res) {
-        var cats = JSON.parse(res);
+      success : function(cats) {
         $('#cat-container').empty();
         for (var i = 0; i < cats.length; i++) {
           appendCat(cats[i])
@@ -33,8 +32,9 @@ $(document).ready(function() {
       type: 'POST',
       url: '/cats',
       data: $(this).serialize(),
-      success: function() {
-        $('#notification').text('CAT ADD SUCCESS ~ ~ ~ OOOOOO')
+      success: function(cat) {
+        appendCat(cat);
+        $('#notification').text('CAT ADD SUCCESS ~ ~ ~ OOOOOO');
         $("input[type='text']").val('');
       },
       error: function() {
@@ -42,5 +42,20 @@ $(document).ready(function() {
       }
     });
   });
+
+  $('#magic').on('click', function (e) {
+    e.preventDefault();
+    console.log("ayyy")
+    $.ajax({
+      type: 'GET',
+      url: 'http://api.mtgdb.info/cards/random',
+      success: function (data) {
+        console.log(data);
+      }, 
+      error: function (err) {
+        console.log(err);
+      }
+    });
+  })
 
 });
