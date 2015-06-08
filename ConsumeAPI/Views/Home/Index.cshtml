@@ -1,0 +1,13 @@
+﻿@model List<ConsumeAPI.Models.RedditItem>
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+
+@foreach (var redditItem in Model)
+{
+    <p>
+        <a href="@redditItem.Url">@redditItem.Title</a>
+    </p>
+}
