@@ -136,3 +136,40 @@ Active Record is an ORM. it allows us to interact with our database using only r
 - since the Student model inherits from ActiveRecord::Base, it now has tons and tons of methods allowing us to interact with the students table. as a result, our models contain hardly any code. beautiful.
 
 - here's a [little walkthrough](http://guides.rubyonrails.org/active_record_basics.html#crud-reading-and-writing-data) of basic CRUD operations provided by ActiveRecord::Base
+
+### Basic CRUD Operations provided by AR
+
+```
+
+# Create:
+
+#   Student.create(params)
+
+#   Student.new(params)
+#   Student.save
+
+# Read:
+  
+#   Student.find(id) # returns the student with that id
+
+#   Student.find_by(key: value, key: value, ... ) # returns the first one it finds
+
+#   Student.where(key: value, key: value, ... )
+
+# Update:
+
+#   # assuming we have an instance of Student in variable 'student'
+#   student.attr_name = new_thing
+#   student.save
+
+#   student.update(key: value, key: value, ... )
+
+# Delete:
+
+#   # assuming we have an instance of Student in variable 'student'
+#   student.destroy
+#   student.delete
+
+#   Student.destroy_all # this doesn't destory the table, it destroys the contents of the table
+```
+
