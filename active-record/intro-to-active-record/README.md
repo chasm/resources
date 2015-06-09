@@ -120,3 +120,13 @@ Active Record is an ORM. it allows us to interact with our database using only r
 - to run our migration, we run: ```rake db:migrate```. 
   - this will run all migrations in the ```db/migrate``` folder, in chronological order (that's why we have timestamps in the filename). additionally, it will only run migrations which have not yet been run.
 - run ```rspec spec/migrate_create_table_spec.rb``` to verify that we've done things correctly.
+
+### create a student model to accompany our migration
+- we've created and run a migration for our students table. a 'students' table with all the fields specified above now exists in our database. however, this table is empty.
+- if we want to interact with our students table (without writing SQL), we will need to create an Active Record Student model.
+- Active Record models, too, use strict naming conventions. 
+  - in ```app/models``` we must create a file with a name being the singular of the associated table's name. in our case this is ```app/models/student.rb```. we have no choice but to name it exactly this.
+  - our model file must contain a class with name being the singular, PascalCase of the associated table's name. this class must also inherit from ```ActiveRecord::Base```.
+  ```ruby
+  ```
+- inside ```app/models``` we'll create a file 
