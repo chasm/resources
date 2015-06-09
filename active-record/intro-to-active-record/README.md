@@ -50,5 +50,73 @@ Active Record is an ORM. it allows us to interact with our database using only r
 ### /db
   - the db folder will contain anything having to do with the database.
 
+### /lib 
+  - this seems to be a miscellaneous tools directory.
+
 ### /spec
   - contains all of our specs.
+
+## let's run through release 0 of the db-drill-student-schema-challenge
+
+### bundle
+  - first things first, we need to run ```bundle install```. nothing will work until we install the gems that our app is dependent upon.
+
+### create a database
+- create a database using one of our rake tasks: ```rake db:create```
+
+### create a migration and migrate
+- what is a migration? short answer: any change to the structure of your database. by structure, we mean things like the addition, modification, or removal of a table, column, etc. 
+- [look at the active record docs](http://edgeguides.rubyonrails.org/active_record_migrations.html) to see all the types of migrations you can make, and how you can make them.
+- migrations have strict naming conventions. your migration will not run correctly unless everything is naming correctly. 
+  - the name of your migration must begin with a time stamp (YYYYMMDDHHMMSS) and end with a brief description of the migration, in snake_case. i.e. ```20150609124800_create_students.rb```
+  - the file must contain a ruby class with name exactly equal to your brief description in the filename, but in PascalCase. the class must also inherit from ```ActiveRecord::Migration```
+    ```ruby
+    require_relative '../config'
+
+    class CreateStudents < ActiveRecord::Migration
+      def change
+      end
+    end
+    ```
+- in our first migration, we'll create a students table with the following fields:
+  <pre>
+  ```
+    +------------+
+    | students   |
+    +------------+
+    | id         |
+    | first_name |
+    | last_name  |
+    | gender     |
+    | birthday   |
+    | email      |
+    | phone      |
+    | created_at |
+    | updated_at |
+    +------------+
+  ```
+  <pre>
+- following the documentation, we write:
+  ```ruby 
+  require_relative '../config'
+
+  class CreateStudents < ActiveRecord::Migration
+    def change
+      create_table :students do |t|
+        t.string :first_name
+        t.string :last_name
+        t.string :gender
+        t.date :birthday
+        t.string :email
+        t.string :phone
+        t.timestamps null: false
+      end
+    end
+  end
+  ```
+    - notice that we don't need to create an 'id' field for the students table. active record does this for you, it knows that all things in the table will have an id and that those ids will start at 1 and forever autoincrement up by 1 for every new row added to the table. 
+    - we also notice that we don't need to manually create 'created_at' and 'updated_at' fields with type 'datetime'. instead, we can use ```t.timestamps null:false```. even more, active record will keep update these fields for us. when we create a new 'student', active record sets 'created_at' to the exact time it was created. whenever we update a student object, active record sets 'updated_at' to the exact time it was updated.
+
+- to run our migration, we run: ```rake db:migrate```. 
+  - this will run all migrations in the ```db/migrate``` folder, in chronological order (that's why we have timestamps in the filename). additionally, it will only run migrations which have not yet been run.
+- run ```rspec spec/migrate_create_table_spec.rb``` to verify that we've done things correctly.
