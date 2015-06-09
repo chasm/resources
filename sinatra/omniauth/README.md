@@ -15,7 +15,8 @@ class CreateUsers < ActiveRecord::Migration
   end
 end
 ```
-- all the above fields we will be able to get from facebook.
+- all the above fields we will be able to get from fb.
+- notice we don't have a password, we're logging in with our fb account, so we don't need another password.
 
 ## add and configure omniauth-facebook
 
