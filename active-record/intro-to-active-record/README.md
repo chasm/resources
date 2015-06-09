@@ -134,3 +134,5 @@ Active Record is an ORM. it allows us to interact with our database using only r
     end
   ```
 - since the Student model inherits from ActiveRecord::Base, it now has tons and tons of methods allowing us to interact with the students table. as a result, our models contain hardly any code. beautiful.
+
+- here's a [little walkthrough](http://guides.rubyonrails.org/active_record_basics.html#crud-reading-and-writing-data) of basic CRUD operations provided by ActiveRecord::Base
