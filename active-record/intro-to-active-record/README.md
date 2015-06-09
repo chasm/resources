@@ -128,5 +128,9 @@ Active Record is an ORM. it allows us to interact with our database using only r
   - in ```app/models``` we must create a file with a name being the singular of the associated table's name. in our case this is ```app/models/student.rb```. we have no choice but to name it exactly this.
   - our model file must contain a class with name being the singular, PascalCase of the associated table's name. this class must also inherit from ```ActiveRecord::Base```.
   ```ruby
+    require_relative '../../db/config'
+  
+    class Student < ActiveRecord::Base
+    end
   ```
-- inside ```app/models``` we'll create a file 
+- since the Student model inherits from ActiveRecord::Base, it now has tons and tons of methods allowing us to interact with the students table. as a result, our models contain hardly any code. beautiful.
