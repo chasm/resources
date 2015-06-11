@@ -6,11 +6,9 @@ describe "Task" do
   let(:complete_task) { Task.create(description: Faker::Lorem.sentence, completed: true) }
 
   describe "#to_s" do
-
     it "render the task's information nicely" do
       expect(incomplete_task.to_s).to eq("[ ] #{incomplete_task.id}. #{incomplete_task.description}")
     end
-
   end
 
   describe "#marker" do

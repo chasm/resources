@@ -1,7 +1,6 @@
 require 'spec_helper'
 require_relative './../app/controllers/tasks_controller.rb'
 
-
 describe "TasksController" do
 
   let(:incomplete_task) { Task.create(description: Faker::Lorem.sentence) }
