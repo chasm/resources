@@ -1,8 +1,6 @@
 require 'spec_helper'
 
-# unit testing
-
-describe Task do
+describe "Task" do
 
   let(:incomplete_task) { Task.create(description: Faker::Lorem.sentence) }
   let(:complete_task) { Task.create(description: Faker::Lorem.sentence, completed: true) }

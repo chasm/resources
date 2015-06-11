@@ -1,6 +1,6 @@
 class Console
 
-  def self.render(message)
+  def self.render!(message)
     puts message
   end
 

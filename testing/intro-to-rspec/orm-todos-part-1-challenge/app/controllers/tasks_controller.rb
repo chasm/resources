@@ -3,40 +3,52 @@ require_relative '../../app/views/console.rb'
 
 class TasksController
 
-	def self.print_list
-		puts Task.all
+	def self.print_list!
+		if Task.all.any?
+			render!(Task.all)
+		else
+			render!("todo list is empty!")
+		end
 	end
 
-	def self.add_to_list(description)
-		Task.create(description: description)
+	def self.add_to_list!(description)
+		task = Task.new(description: description)
+		if task.save
+			render!('task successfully created')
+		else
+			render!('task must have a description')
+		end
 	end
 
-	def self.delete_from_list(id)
+	def self.delete_from_list!(id)
 		if task = Task.find_by_id(id)
 			task.destroy
+			render!('task successfully deleted')
 		else
-			Console.render("task does not exist")
+			render!("task does not exist")
 		end
 	end
 
-	def self.tick(id)
+	def self.tick!(id)
 		if task = Task.find_by_id(id)
 			task.tick!
+			render!('task completed!')
 		else
-			Console.render("task does not exist")
+			render!("task does not exist")
 		end
 	end
 
-	def self.untick(id)
+	def self.untick!(id)
 		if task = Task.find_by_id(id)
 			task.untick!
+			render!('task set to incomplete')
 		else
-			Console.render("task does not exist")
+			render!("task does not exist")
 		end
 	end
 
-	def self.render(message)
-		Console.render(message)
+	def self.render!(message)
+		Console.render!(message)
 	end
 
 end

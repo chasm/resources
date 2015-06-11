@@ -1,5 +1,7 @@
 class Task < ActiveRecord::Base
 
+	validates :description, presence: true
+
 	def to_s
 		"[#{marker}] #{id}. #{description}"
 	end
