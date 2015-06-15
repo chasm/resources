@@ -47,8 +47,10 @@ class TasksController
 		end
 	end
 
-	def self.render!(message)
-		Console.render!(message)
-	end
+	private
+
+		def self.render!(message)
+			Console.render!(message)
+		end
 
 end
