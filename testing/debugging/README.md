@@ -10,7 +10,7 @@
   - Use the minus sign to eliminate results containing certain words
 3. don't assume that things work the way they're meant to
 4. debug one thing at a time
-5. explain your code, slowly, line-by-line, to an inanimate object (see [rubber duck debugging](en.wikipedia.org/wiki/Rubber_duck_debugging)). seriously, do this. it works.
+5. explain your code, slowly, line-by-line, to an inanimate object (see [rubber duck debugging](http://en.wikipedia.org/wiki/Rubber_duck_debugging)). seriously, do this. it works.
 
 ### debuggers
 
