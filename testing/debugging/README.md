@@ -124,7 +124,7 @@ byebug stops at the line directly below our breakpoint. this line has not yet ex
 
 ```num``` is now 1, and the current line is now line 6.
 
-we can press the return key, to execute the last command (next). what do we expect will happen?
+we can press the return key, to execute the last command (```next```). what do we expect will happen?
 
 ```
 (byebug) 
@@ -145,7 +145,7 @@ $
 (byebug) 
 ```
 
-its moved to line 7. interesting, it doesn't go inside of the print_money method, it just continues onto the next line of the current method. what if we run the next command again?
+its moved to line 7. interesting, it doesn't go inside of the ```print_money``` method, it just continues onto the next line of the current method. what if we run the next command again?
 
 ```
 (byebug) 
@@ -226,9 +226,9 @@ $$
 (byebug) 
 ```
 
-yep, two dollar signs. cool.
+yep, 2 dollar signs. cool.
 
-what if we wanted to change num to something else? we can set num, as well as any other variable, to anything we want at any time. 
+what if we wanted to change ```num``` to something else? we can set ```num```, as well as any other variable, to anything we want at any time. 
 
 ```
 (byebug) num = -10000
@@ -236,7 +236,7 @@ what if we wanted to change num to something else? we can set num, as well as an
 (byebug) 
 ```
 
-we can just type ```num = -10000``` and num becomes -10000. we can confirm this to ourselves by running ```next``` one more time. 
+we can just type ```num = -10000``` and ```num``` becomes -10000. we can confirm this to ourselves by running ```next``` one more time. 
 
 ```
 (byebug) next
@@ -256,7 +256,7 @@ we can just type ```num = -10000``` and num becomes -10000. we can confirm this 
 (byebug) 
 ```
 
-and we see that num is updated. sweet.
+and we see that ```num``` is updated. sweet.
 
 we're finished with this example, so let's quit the debugger with the ```quit``` command. 
 
