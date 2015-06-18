@@ -1,28 +1,277 @@
-Lecture for Rubyists:
+# Lecture Notes: Debugging
 
-- talk about some common debugging tips:
-  - make small, single purpose methods with clear inputs and outputs
-  - testing at seams
-  - error messages
-  - googling carefully and intelligently
+### some general tips
 
-- introduce the concept of debuggers and breakpoints and then show them byebug
-[byebug documentation](https://github.com/deivid-rodriguez/byebug)
+1. read error messages
+  - when something goes wrong, we get an enormous error message with a huge list of files and corresponding line numbers. there is a lot of noise here, but we can filter that noise. look for any files that you recognize, go to the line numbers of those files and read. read slowly -- character by character. your error is likely to be there or in that general vicinity. 
+2. google carefully and intelligently
+  - use google's search tools, namely, the time filter. potential solutions from several years ago may not be relevant anymore, look at recent search results.
+  - use quotes to search an exact phrase (".zlogin:1: command not found: rbenv")
+  - Use the minus sign to eliminate results containing certain words
+3. don't assume that things work the way they're meant to
+4. debug one thing at a time
+5. explain your code, slowly, line-by-line, to an inanimate object (see [rubber duck debugging](en.wikipedia.org/wiki/Rubber_duck_debugging)). seriously, do this. it works.
 
-- run through this example. Show them the recursive stack overflow explosion. Then put a break point and keep track of num. show how you can step into the print_money function
-[recurse example](./recurse-example.rb)
+### debuggers
 
-- run through this example of a 3-d nested loop. Show the same things as before. Explain that this will be a useful tool when doing the sudoku challenge.
-[nested loop example](./nested-loop-example.rb)
+suppose we write a method, and it doesn't work, and we don't know why. what do we do? we might try to 'peek' into the method by throwing a few ```puts``` statements around. we run the code, everything explodes, and we get some printouts amongst a sea of error messages that give us a better idea of what our code is actually doing. 
 
-- there are a lot of commands available with byebug, but these are the important ones.
-  - list
-  - next
-  - break
-  - display / undisplay
-  - irb
-  - quit
-  - help [command]
+we repeat this process over and over until the printouts start looking like what we want them to look like, and the error messages start to disappear.
 
-other notes:
-  - pressing enter repeats the last command
+but there should be a better way right? there is. it's called a debugger. 
+
+a debugger is a program designed to test and debug other programs. it lets you pause the execution of your code at any line, and while you're paused, you can read and write to any existing variables. while you are in this paused state, you can step through your code one line at a time. this is extremely convenient.
+
+### byebug
+
+a popular ruby debugger is [byebug](https://github.com/deivid-rodriguez/byebug). 
+
+to install byebug on your machine, open terminal and run ```gem install byebug```.
+
+to run byebug on a ruby file:
+  1. add ```require 'byebug'``` to the top of that file.
+  2. include the word ```byebug``` on whatever line you want your 'pause' the execution of your code. this is called a 'breakpoint'
+  3. run your file as you normally would.
+  4. use byebug's interface (described below) to debug your code.
+
+### byebug's interface
+
+there are a lot of commands that byebug makes available to you (you can see the full list on [their github](https://github.com/deivid-rodriguez/byebug)), but here's a short list of some important ones:
+- list
+  - lists lines of code forward from the current line
+- next
+  - goes to the next line
+- step
+  - steps inside of a method
+- display <variable_name>
+  - begins tracking the value of specified variable. if no variable specified, lists all tracked variables
+- undisplay <variable_id>
+  - stops tracking variable with specified id
+- quit
+  - quits byebug
+- help <command>
+  - prints help text regarding the specified command.
+- [return key]
+  - pressing the return key repeats the last command entered.
+
+### example usage
+
+#### [recurse example](./recurse-example.rb)
+
+```ruby
+require 'byebug'
+
+def recurse(num)
+  byebug
+  num += 1
+  print_money(num)
+  recurse(num)
+end
+
+def print_money(num)
+  puts "$" * num
+end
+
+recurse(0)
+```
+
+when we run the following example. we see the following:
+
+```
+➜  ~  ruby test.rb
+
+[1, 10] in test.rb
+    1: require 'byebug'
+    2: 
+    3: def recurse(num)
+    4:   byebug
+=>  5:   num += 1
+    6:   print_money(num)
+    7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+(byebug) 
+```
+
+byebug stops at the line directly below our breakpoint. this line has not yet executed. we can use the ```display``` command to begin tracking ```num```
+
+```
+(byebug) display num
+1: num = 0
+(byebug) 
+```
+
+```num``` is now displayed, and is equal to zero, as it should. we can use the ```next``` command to execute the current line, and move the debugger to the next line
+
+```
+(byebug) next
+1: num = 1
+
+[1, 10] in test.rb
+    1: require 'byebug'
+    2: 
+    3: def recurse(num)
+    4:   byebug
+    5:   num += 1
+=>  6:   print_money(num)
+    7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+(byebug) 
+```
+
+```num``` is now 1, and the current line is now line 6.
+
+we can press the return key, to execute the last command (next). what do we expect will happen?
+
+```
+(byebug) 
+$
+1: num = 1
+
+[2, 11] in test.rb
+    2: 
+    3: def recurse(num)
+    4:   byebug
+    5:   num += 1
+    6:   print_money(num)
+=>  7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+   11:   puts "$" * num
+(byebug) 
+```
+
+its moved to line 7. interesting, it doesn't go inside of the print_money method, it just continues onto the next line of the current method. what if we run the next command again?
+
+```
+(byebug) 
+1: num = 1
+
+[1, 10] in test.rb
+    1: require 'byebug'
+    2: 
+    3: def recurse(num)
+    4:   byebug
+=>  5:   num += 1
+    6:   print_money(num)
+    7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+(byebug) 
+```
+
+it goes to line 5. this makes sense. the last line of the ```recurse``` method calls the ```recurse``` method. so, we end up on line 5 of the currently executing ```recurse``` method. let's run ```next``` one more time. 
+
+```
+(byebug) 
+1: num = 2
+
+[1, 10] in test.rb
+    1: require 'byebug'
+    2: 
+    3: def recurse(num)
+    4:   byebug
+    5:   num += 1
+=>  6:   print_money(num)
+    7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+(byebug) 
+```
+
+```num``` is now 2, as expected, and we're back on line 6 again. this time, we'd like to actually step into the ```print_money``` method. we can do this with the ```step``` command. 
+
+```
+(byebug) step
+1: num = 2
+
+[5, 14] in test.rb
+    5:   num += 1
+    6:   print_money(num)
+    7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+=> 11:   puts "$" * num
+   12: end
+   13: 
+   14: recurse(0)
+(byebug) 
+```
+
+super. now we're inside the ```print_money``` method. ```num``` is still 2. so, if we run ```next``` again, we should see 2 "$" symbols appear on the screen. 
+
+```
+(byebug) next
+$$
+1: num = 2
+
+[2, 11] in test.rb
+    2: 
+    3: def recurse(num)
+    4:   byebug
+    5:   num += 1
+    6:   print_money(num)
+=>  7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+   11:   puts "$" * num
+(byebug) 
+```
+
+yep, two dollar signs. cool.
+
+what if we wanted to change num to something else? we can set num, as well as any other variable, to anything we want at any time. 
+
+```
+(byebug) num = -10000
+-10000
+(byebug) 
+```
+
+we can just type ```num = -10000``` and num becomes -10000. we can confirm this to ourselves by running ```next``` one more time. 
+
+```
+(byebug) next
+1: num = -10000
+
+[1, 10] in test.rb
+    1: require 'byebug'
+    2: 
+    3: def recurse(num)
+    4:   byebug
+=>  5:   num += 1
+    6:   print_money(num)
+    7:   recurse(num)
+    8: end
+    9: 
+   10: def print_money(num)
+(byebug) 
+```
+
+and we see that num is updated. sweet.
+
+we're finished with this example, so let's quit the debugger with the ```quit``` command. 
+
+```
+(byebug) quit
+Really quit? (y/n) 
+```
+
+yes, actually.
+
+```
+Really quit? (y/n) y
+➜  ~  
+```
+
+great.
+
+#### [nested loop example](./nested-loop-example.rb)
