@@ -58,6 +58,8 @@ there are a lot of commands that byebug makes available to you (you can see the 
 
 #### [recurse example](./recurse-example.rb)
 
+we'll use the following example to play around with byebug's command interface. just to be clear, there is nothing significant to debug here! we are only using this as a way to experiment with byebug's interface.
+
 ```ruby
 require 'byebug'
 
@@ -275,3 +277,200 @@ Really quit? (y/n) y
 great.
 
 #### [nested loop example](./nested-loop-example.rb)
+
+in this next, example we have a nested loop. we're using this as an example, because on friday you will be building a sudoku board solver. this solver will likely involve lots of nested loops. your sudoku board may be represented as an array of 'rows', with each 'row' being an array of 'cells'. additionally, each cell may have an array of 'potential_values'.
+
+in this implementation our board is represented as an array of arrays of arrays. that's a lot of layers. if things break (and they will), it may be a bit hard to debug. there's a lot to keep track of, but we can offload that to a debugger.
+
+in this next example, again there is nothing significant to debug. we're just using this bit of code to explore the functionality of byebug.
+
+```ruby
+require 'byebug'
+
+def print_money(num)
+  puts "$" * num
+end
+
+5.times do |i|
+  5.times do |j|
+    5.times do |k|
+      byebug
+      print_money(i*j*k)
+    end
+  end
+end
+```
+
+when we run this code, we get:
+
+```
+➜  ~  ruby test.rb 
+
+[5, 14] in test.rb
+    5: end
+    6: 
+    7: 5.times do |i|
+    8:   5.times do |j|
+    9:     5.times do |k|
+   10:       byebug
+=> 11:       print_money(i*j*k)
+   12:     end
+   13:   end
+   14: end
+(byebug) 
+```
+
+immediately, we can use the ```display``` command to start tracking ```i```, ```j```, and ```k```. this way, we will always know in what iteration we are in, in our nested loop. 
+
+```
+(byebug) display i
+1: i = 0
+(byebug) display j
+2: j = 0
+(byebug) display k
+3: k = 0
+(byebug) 
+```
+
+now, let's run ```next``` several times 
+
+```
+(byebug) 
+1: i = 0
+2: j = 3
+3: k = 4
+
+[5, 14] in test.rb
+    5: end
+    6: 
+    7: 5.times do |i|
+    8:   5.times do |j|
+    9:     5.times do |k|
+   10:       byebug
+=> 11:       print_money(i*j*k)
+   12:     end
+   13:   end
+   14: end
+(byebug) 
+```
+
+at the top, we can see our displayed variables, ```i```, ```j```, and ```k```. 
+
+at this instant in time, our innermost loop is just about to complete. ```k``` is 4. what do we expect will happen when this next line executes?
+
+```
+(byebug) 
+
+*** NameError Exception: undefined local variable or method `k' for main:Object
+
+1: i = 0
+2: j = 4
+3: k = nil
+
+[4, 13] in test.rb
+    4:   puts "$" * num
+    5: end
+    6: 
+    7: 5.times do |i|
+    8:   5.times do |j|
+=>  9:     5.times do |k|
+   10:       byebug
+   11:       print_money(i*j*k)
+   12:     end
+   13:   end
+(byebug) 
+```
+
+```i``` is still 0. ```j``` has increased from 3 to 4. ```k``` is now nil. we get a little error message at the top saying that ```k``` is undefined. this is true. since we've just exited the 'k' times loop, ```k``` is currently undefined.
+
+but, if we run ```next``` one more time. 
+
+```
+(byebug) next
+1: i = 0
+2: j = 4
+3: k = 0
+
+[5, 14] in test.rb
+    5: end
+    6: 
+    7: 5.times do |i|
+    8:   5.times do |j|
+    9:     5.times do |k|
+   10:       byebug
+=> 11:       print_money(i*j*k)
+   12:     end
+   13:   end
+   14: end
+(byebug) 
+```
+
+```k``` is defined once more, and has been reset to ```0```. 
+
+now, let's step into the ```print_money``` method
+
+```
+(byebug) step
+*** NameError Exception: undefined local variable or method `i' for main:Object
+
+*** NameError Exception: undefined local variable or method `j' for main:Object
+
+*** NameError Exception: undefined local variable or method `k' for main:Object
+
+1: i = nil
+2: j = nil
+3: k = nil
+
+[1, 10] in test.rb
+    1: require 'byebug'
+    2: 
+    3: def print_money(num)
+=>  4:   puts "$" * num
+    5: end
+    6: 
+    7: 5.times do |i|
+    8:   5.times do |j|
+    9:     5.times do |k|
+   10:       byebug
+(byebug) 
+```
+
+now, ```i```, ```j```, and ```k``` are all undefined. and of course they are. we are in a new method with its own scope. it doesn't know about these variables. but, we've passed the method a ```num```. 
+
+let's display ```num```
+
+```
+(byebug) display num
+6: num = 0
+(byebug) 
+```
+
+```num``` is 0, because ```i * j * k = 0 * 4 * 0 = 0``` when it was passed in as ```num```. cool, and if we ```next``` again ...
+
+```
+(byebug) next
+
+*** NameError Exception: undefined local variable or method `num' for main:Object
+
+1: i = 0
+2: j = 4
+3: k = 1
+6: num = nil
+
+[5, 14] in test.rb
+    5: end
+    6: 
+    7: 5.times do |i|
+    8:   5.times do |j|
+    9:     5.times do |k|
+=> 10:       byebug
+   11:       print_money(i*j*k)
+   12:     end
+   13:   end
+   14: end
+(byebug) 
+```
+
+```num``` is now undefined, and ```i```, ```j```, and ```k``` are now defined. 
+
+great.
