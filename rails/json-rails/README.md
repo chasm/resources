@@ -364,6 +364,7 @@ if someone tries to create a review with improper parameters, we need to catch t
 ```ruby
 class Api::V1::ReviewsController < Api::V1::ApiController  
   def create
+    item = Item.find_by_id(params[:id])
     review = item.reviews.new(review_params)
     if review.save
       render json: review.as_json(except: [:updated_at, :item_id])
