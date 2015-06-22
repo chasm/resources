@@ -1,14 +1,14 @@
 function numToSymbol(number) {
-  var output = "";
-  var num_of_fives = Math.floor(number / 5);
-  for (var i = 0; i < num_of_fives; i++) {
-    output += "=";
+  var symbol = "";
+  var numOfFives = Math.floor(number / 5);
+  for (var i = 0; i < numOfFives; i++) {
+    symbol += "=";
   }
   var remainder = number % 5;
   for (var i = 0; i < remainder; i++) {
-    output += "|";
+    symbol += "|";
   }
-  return output;
+  return symbol;
 }
 
 console.log(numToSymbol(1) === "|");
