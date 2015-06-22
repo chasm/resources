@@ -6,15 +6,15 @@ when we program, oftentimes we need to switch between representations of the sam
 
 Anyways, we want to get used to the idea of switching between representations of the same concepts. So let's try a few examples.
 
-## converting number to 'symbol'(./code-examples/numbers-to-symbols.js)
+## [converting numbers to symbols](./code-examples/numbers-to-symbols.js)
 
-let's invent an alternative representation (lets call it 'symbol') for our arabic number system, and write a function to translate from arabic to 'symbol'
+let's invent an alternative representation (we'll call it 'symbol') for our arabic number system, and write a function to translate from arabic to 'symbol'
 
 here is how 'symbol' works:
-  - the character '|' has a value of 1
-  - the character '=' has a value of 5
-  - characters are additive, i.e. =||| = 5 + 1 + 1 + 1 = 8
-  - characters are ordered from high to low, going left to right, i.e. 8 is represented as "=|||" not "|||="
+  - the character ```|``` has a value of 1
+  - the character ```=``` has a value of 5
+  - characters are additive, i.e. ```=|||``` = ```5 + 1 + 1 + 1``` = ```8```
+  - characters are ordered from high to low, going left to right, i.e. 8 is represented as ```=|||``` not ```|||=```
 
 we'll use javascript to write a number-to-symbol converter
 
@@ -45,7 +45,7 @@ console.log(numToSymbol(10) === "==");
 console.log(numToSymbol(12) === "==||");
 ```
 
-if we've written our function correctly. we should get a bunch of 'true's logging to the console. if we get a single 'false', our function doesn't work and we know that we have to change something. 
+if we've written our function correctly, we should get a bunch of 'true's logging to the console when we run our script. if we get a single 'false', we now that our function doesn't work and we know that we have to change something.
 
 we'll leave these tests at the bottom of our script, and use them to check our work as we explore solutions.
 
