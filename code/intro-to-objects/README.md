@@ -73,6 +73,10 @@ class Cat
     @clothes.each{|item| puts item.name}
   end
 
+  def to_s
+    "meow meow meow meow meow meow"
+  end
+
   private
 
   def check_energy
@@ -89,6 +93,7 @@ class Clothing
 end
 
 cat = Cat.new("scrappy")
+puts cat
 cat.walk!
 cat.feed("poison")
 cat.dress("top-hat")
