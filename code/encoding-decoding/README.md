@@ -330,7 +330,7 @@ that 'human' process was a bit like this:
   - return sum
 ```
 
-we'll have to add a few more steps, though. if we want to use javascript to iterate through our binary sequence, we need to turn it into something which can be iterated through.
+we'll have to add a few more steps, though. if we want to use javascript to iterate through our binary integer, we need to turn it into something which can be iterated through.
 
 we can't iterate through an integer, but we can iterate through an array of integers. so we'll add an additional step to our algorithm.
 
@@ -700,8 +700,7 @@ and our completed code!
 
 ```javascript
 function splitIntToArray (integer) {
-  var string = integer.toString();
-  var array = string.split('');
+  var array = integer.toString().split('');
   for (var i = 0; i < array.length; i++) {
     array[i] = +array[i];
   }
