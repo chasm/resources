@@ -1,6 +1,5 @@
 function splitIntToArray (integer) {
-  var string = integer.toString();
-  var array = string.split('');
+  var array = integer.toString().split('');
   for (var i = 0; i < array.length; i++) {
     array[i] = +array[i];
   }

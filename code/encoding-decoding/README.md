@@ -245,13 +245,11 @@ we'll do one more example. here, we'll write a function that converts binary to 
 
 ### a brief aside on binary
 
-a brief aside on binary, in case you don't already know how it works:
-
-binary is a way of representing a number as a sequence of zeros and ones. you've probably seen it before. for example, ```10011110``` is the binary representation of ```158```. 
+in case you don't already know, binary is a way of representing a number as a sequence of zeros and ones. you've probably seen it before. for example, ```10011110``` is the binary representation of ```158```.
 
 binary works like this:
 
-each digit (bit) in a binary sequence represents has a power of 2 associated with it.
+each digit (bit) in a binary integer has a power of 2 associated with it.
 
 the right-most bit is associated with ```2 ^ 0``` which evaluates to 1. 
 
@@ -264,9 +262,11 @@ this pattern repeats as we go from right to left, with the associated power of 2
 128  64  32  16   8   4   2   1
 ```
 
-great. so what's the difference between 1 and 0? the value of the bit (either 1 or 0) is a multiplier. it determines whether we add that bit's associated power of 2 to our resultant number. if we get a 1, we add that number. if we get a zero, we exclude it from the sum.
+great. so what's the difference between 1 and 0? 
 
-let's use the following binary sequence as an example:
+the value of the bit (either 1 or 0) is a multiplier. it determines whether we add that bit's associated power of 2 to our resultant number. if we get a 1, we add that number. if we get a zero, we exclude it from the sum.
+
+let's use the following binary integer as an example:
 
 ```
 10010010
@@ -281,7 +281,7 @@ and we'll add the associated powers of 2 above for reference:
  1   0   0   1   0   0   1   0
 ```
 
-adding all the 1's, we get:
+multipling each bit with its corresponding power of two, we get:
 
 ```
 (1 * 128) + (0 * 64) + (0 * 32) + (1 * 16) + (0 * 4) + (1 * 2) + (0 * 1) = 128 + 16 + 2 = 146
@@ -291,7 +291,7 @@ it's a clever way of representing numbers isn't it?
 
 ### let's build a binary decoder
 
-okay, now that we understand binary, we should be able to build something which converts from binary to integers. 
+okay, now that we understand binary, we should be able to build something which converts from binary to integers.
 
 let's call that method ```binToInt``` and give it a single input ```bin```
 
@@ -526,12 +526,29 @@ for (var i = 0; i < expectedArray.length; i++) {
 }
 ```
 
+and a bit of refactoring ...
+
+```javascript
+function splitIntToArray (integer) {
+  var array = integer.toString().split('');
+  for (var i = 0; i < array.length; i++) {
+    array[i] = +array[i];
+  }
+  return array;
+}
+
+var array = splitIntToArray(10011001);
+var expectedArray = [1,0,0,1,1,0,0,1];
+for (var i = 0; i < expectedArray.length; i++) {
+  console.log(expectedArray[i] === array[i])
+}
+```
+
 we'll use our new function in ```binToInt``` now:
 
 ```javascript
 function splitIntToArray (integer) {
-  var string = integer.toString();
-  var array = string.split('');
+  var array = integer.toString().split('');
   for (var i = 0; i < array.length; i++) {
     array[i] = +array[i];
   }
@@ -589,7 +606,7 @@ console.log(binToInt(10011110) === 158);
 
 how do we keep track of the power? well, if we're iterating through the array from left to right, power is going to start at ```bitArray.length - 1``` and decrement by 1 every iteration
 
-we can add a few things in our for loop to take care of this:
+we can add a few things in our for loop to account for this:
 
 ```javascript
 function binToInt (bin) {
@@ -622,7 +639,7 @@ function binToInt (bin) {
 
   for (var i = 0, power = bitArray.length - 1; i < bitArray.length; i++, power--) {
     var bit = bitArray[i];
-    var bitValue = Math.pow(2, power);
+    var powerOfTwo = Math.pow(2, power);
     // multiply associated power of 2 by value of bit (1 or 0)
     // add the product to the sum
   }  
@@ -637,7 +654,8 @@ console.log(binToInt(1110) === 14);
 console.log(binToInt(10011110) === 158);
 ```
 
-and the last bits are very easy:
+and the last parts are very easy:
+
 ```javascript
 function binToInt (bin) {
   var sum = 0;
@@ -645,8 +663,8 @@ function binToInt (bin) {
 
   for (var i = 0, power = bitArray.length - 1; i < bitArray.length; i++, power--) {
     var bit = bitArray[i];
-    var bitValue = Math.pow(2, power);
-    sum += bitValue * bit
+    var powerOfTwo = Math.pow(2, power);
+    sum += powerOfTwo * bit
   }  
 
   return sum;
