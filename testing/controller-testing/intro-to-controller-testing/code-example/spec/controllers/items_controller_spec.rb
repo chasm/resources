@@ -7,7 +7,7 @@ describe "ItemsController" do
 
   describe "GET /items" do
 
-    context "if no errors stored in the session" do
+    context "if no error stored in the session" do
 
       before do
         @item = Item.create(valid_params)
@@ -28,11 +28,11 @@ describe "ItemsController" do
 
     end
 
-    context "if errors in the session" do
+    context "if error in the session" do
 
       before do
         @item = Item.create(valid_params)
-        get '/items', {}, "rack.session" => {:errors => "meowmeow"}
+        get '/items', {}, "rack.session" => {:error => "meowmeow"}
       end
 
       it "has http status code of 200" do
@@ -47,12 +47,12 @@ describe "ItemsController" do
         expect(last_response.body).to include(@item.description)
       end
 
-      it "renders an error message on the page" do
+      it "renders error message on the page" do
         expect(last_response.body).to include("meowmeow")
       end
 
       it "clears the session of errors" do
-        expect(session[:errors]).to be_nil
+        expect(session[:error]).to be_nil
       end
 
     end
@@ -71,7 +71,7 @@ describe "ItemsController" do
         expect(last_response.status).to eq(302)
       end
 
-      it "creates an item in the database" do
+      it "creates an item in the database with specified params" do
         expect(Item.find_by_name(valid_params[:name])).to be_truthy
       end
 
@@ -92,7 +92,7 @@ describe "ItemsController" do
         expect(last_response.status).to eq(302)
       end
 
-      it "does not create an item in the database" do
+      it "does not create an item in the database with specified params" do
         expect(Item.find_by_name(invalid_params[:name])).to be_nil
       end
 
@@ -101,8 +101,8 @@ describe "ItemsController" do
         expect(URI(full_url).path).to eq('/items')
       end
 
-      it "stores list of errors in the session" do
-        expect(session[:errors]).to be_truthy
+      it "stores error in the session" do
+        expect(session[:error]).to be_truthy
       end
 
     end
