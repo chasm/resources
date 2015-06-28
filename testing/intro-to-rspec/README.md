@@ -13,7 +13,7 @@ test_array = [1,5,3,4,2]
 p average_of(test_array) == 3
 ```
 
-on the right hand side of the ```==``` we have an 'expected' value. on the left hand side of the ```==``` we have our actual value, which is the return value of the fxn we are trying to test. if the two are equal, we get a ```true``` printing to the console. else, we get false.
+on the right hand side of the ```==``` we have an 'expected' value. on the left hand side of the ```==``` we have our actual value, which is the return value of the fxn we are trying to test. if the two are equal, we get a ```true``` printing to the console. else, we get ```false```i.
 
 we can generalize this as:
 ```ruby
