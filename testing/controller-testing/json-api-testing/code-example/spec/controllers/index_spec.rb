@@ -9,7 +9,7 @@ describe "IndexController" do
     Comment.destroy_all
   end
 
-  describe "GET /users" do
+  describe "GET /api/v1/users" do
 
     before do
       5.times { FactoryGirl.create(:user) }
