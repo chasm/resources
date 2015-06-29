@@ -25,10 +25,10 @@ suppose you're trying to test that a user can 'like' a comment made by another u
 
 ```ruby
 before do
-  @category = Category.create(name: Faker::Commerce.department)
-  @product = @category.products.create(name: Faker::Commerce.product_name, price: rand(1..100))
-  @posting_user = User.create(username: Faker::Internet.user_name, email: Faker::Internet.email, password: "password")
-  @comment = @product.comments.create(body: Faker::Lorem.paragraph, user: @posting_user)
+  category = Category.create(name: Faker::Commerce.department)
+  product = category.products.create(name: Faker::Commerce.product_name, price: rand(1..100))
+  posting_user = User.create(username: Faker::Internet.user_name, email: Faker::Internet.email, password: "password")
+  @comment = @product.comments.create(body: Faker::Lorem.paragraph, user: posting_user)
   @liking_user = User.create(username: Faker::Internet.user_name, email: Faker::Internet.email, password: "password")
 end
 ```
@@ -80,9 +80,20 @@ kind of cool. but what if we create a new comment:
 comment = FactoryGirl.create(:comment)
 ```
 
-a comment with a faker-generated body will be added to the DB. but also, that comment will be associated with a ```user``` and ```product```, as defined by your ```user``` and ```product``` factories! that means also, that your new comment's product will be associated with a ```category``` also defined by factory girl. this is very convenient.
+a comment with a faker-generated body will be added to the DB. but also, that comment will be associated with a ```user``` and ```product```, as defined by your ```user``` and ```product``` factories! that means also, that your new comment's product will be associated with a ```category``` also defined by factory girl. 
 
-but what if we want to create a bunch of comments for a specific user, and not a random one that factory girl autogenerates for us? no problem.
+this means that we can reduce our ```before``` block above to:
+
+```ruby
+before do
+  @comment = FactoryGirl.create(:comment)
+  @liking_user = FactoryGirl.create(:user)
+end
+```
+
+convenient.
+
+factory girl is flexible too. suppose we wanted to create a bunch of comments for a specific user, and not a random one that factory girl autogenerates for us? no problem.
 
 ```ruby
 user = FactoryGirl.create(:user)
