@@ -4,7 +4,7 @@
 - introduce factory girl, and show them the ```factories.rb``` file in the ```/spec``` folder.
 - walk through creating specs for a couple GET routes, and a POST route
 
-## lecture notes [in progress]
+## lecture notes
 
 this morning you built your first JSON api. in the past, we've built servers that return HTML. now we're building servers that return raw JSON data back, with the expectation that the client will render it however they want. our server returns the right data, and the client does the rest.
 
@@ -141,6 +141,36 @@ describe "api_controller" do
     Article.destroy_all
     Comment.destroy_all
   end
+end
+```
+
+notice that we require_relative the '../factories.rb' file provided to us in the 'build-an-api' challenge. that file looks like this:
+
+```ruby
+require 'factory_girl'
+require 'faker'
+
+FactoryGirl.define do
+
+  factory :user do
+    username { Faker::Internet.user_name }
+    email { Faker::Internet.email }
+    name { Faker::Name.name }
+    bio { Faker::Lorem.paragraph }
+  end
+
+  factory :article do
+    title { Faker::Lorem.word }
+    body { Faker::Lorem.paragraph }
+    user
+  end
+
+  factory :comment do
+    body { Faker::Lorem.paragraph }
+    user
+    article
+  end
+
 end
 ```
 
