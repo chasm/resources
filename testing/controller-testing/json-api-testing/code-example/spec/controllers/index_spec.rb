@@ -35,10 +35,10 @@ describe "api_controller" do
     context "with valid params" do
       before do
         @article = FactoryGirl.create(:article)
-        @user = @article.user
-        @valid_comment_params = FactoryGirl.build(:comment).attributes
+        commentor = FactoryGirl.create(:user)
+        @valid_comment_params = { body: Faker::Lorem.sentence, user_id: commentor.id}
         post "/api/v1/articles/#{@article.id}/comments", @valid_comment_params
-        @comment = Comment.find_by(body: @valid_comment_params["body"], user_id: @valid_comment_params["user_id"])
+        @comment = Comment.find_by(@valid_comment_params)
       end
 
       it "creates a new comment with specified params" do
@@ -53,11 +53,10 @@ describe "api_controller" do
     context "with invalid params" do
       before do
         @article = FactoryGirl.create(:article)
-        @user = @article.user
         post "/api/v1/articles/#{@article.id}/comments", { water: false }
       end
 
-      it "will not create a new comment" do
+      it "does not create a new comment" do
         expect(Comment.all.length).to eq(0)
       end
 
