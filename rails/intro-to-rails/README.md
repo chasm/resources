@@ -8,7 +8,7 @@ we are going to build [meowtown](http://meowtown.herokuapp.com/) with rails
 ```ruby
 ### gemfile
 group :development, :test do
-	gem 'rspec-rails', '~> 3.0'
+  gem 'rspec-rails', '~> 3.0'
 end
 ```
 ```rails g rspec:install```
@@ -17,7 +17,7 @@ end
 ```ruby
 ## gemfile
 group :test do
-	gem 'shoulda-matchers', require: false
+  gem 'shoulda-matchers', require: false
 end
 
 ## rails_helper
@@ -28,7 +28,7 @@ require 'shoulda/matchers'
 ```ruby
 ### in gemfile
 group :test, :development do
-	gem 'faker'
+  gem 'faker'
 end
 
 ### in rails_helper
@@ -76,79 +76,70 @@ end
 - in ```spec/factories/cats.rb```
 ```ruby
 FactoryGirl.define do
+  factory :cat do 
+    name Faker::Name.name 
+    life_story Faker::Lorem.paragraph 
+    image_url Faker::Avatar.image
 
-	factory :cat do 
-
-		name Faker::Name.name 
-		life_story Faker::Lorem.paragraph 
-		image_url Faker::Avatar.image
-
-		factory :cat_with_1_life do
-			lives 1
-		end
-
-	end
-
+    factory :cat_with_1_life do
+      lives 1
+    end
+  end
 end
 ```
+
 - in ```spec/models/cat_spec.rb```
 ```ruby
 require 'rails_helper'
 
 RSpec.describe Cat, type: :model do
+  let(:healthy_cat) { create(:cat) }
+  let(:almost_dead_cat) { create(:cat_with_1_life) }
 
-	let(:healthy_cat) { create(:cat) }
-	let(:almost_dead_cat) { create(:cat_with_1_life) }
+  describe "fields" do
+    it { should have_db_column(:name).of_type(:string) }
+    it { should have_db_column(:life_story).of_type(:text) }
+    it { should have_db_column(:image_url).of_type(:string) }
+    it { should have_db_column(:lives).of_type(:integer).with_options(default: 9) }
+  end
 
-	describe "fields" do
-		it { should have_db_column(:name).of_type(:string) }
-		it { should have_db_column(:life_story).of_type(:text) }
-		it { should have_db_column(:image_url).of_type(:string) }
-		it { should have_db_column(:lives).of_type(:integer).with_options(default: 9) }
-	end
+  describe "validations" do
+    it { should validate_presence_of(:name) }
+    it { should validate_presence_of(:life_story) }
+    it { should validate_presence_of(:image_url) }
+  end
 
-	describe "validations" do
-		it { should validate_presence_of(:name) }
-		it { should validate_presence_of(:life_story) }
-		it { should validate_presence_of(:image_url) }
-	end
-
-	describe "methods" do
-		describe "#lose_a_life!" do
-			context "if cat has more than 1 life remaining" do
-				it "decrements the cat's lives by 1" do
-					healthy_cat.lose_a_life!
-					expect(healthy_cat.lives).to eq(8)
-				end
-			end
-			context "if cat has 1 life remaining" do
-				it "removes the cat from the database" do
-					almost_dead_cat.lose_a_life!
-					expect(Cat.find_by_name(almost_dead_cat.name)).to be_nil
-				end
-			end
-		end
-	end
-
+  describe "methods" do
+    describe "#lose_a_life!" do
+      context "if cat has more than 1 life remaining" do
+        it "decrements the cat's lives by 1" do
+          healthy_cat.lose_a_life!
+          expect(healthy_cat.lives).to eq(8)
+        end
+      end
+      context "if cat has 1 life remaining" do
+        it "removes the cat from the database" do
+          almost_dead_cat.lose_a_life!
+          expect(Cat.find_by_name(almost_dead_cat.name)).to be_nil
+        end
+      end
+    end
+  end
 end
 ```
 - in ```app/models/cat.rb```
 ```ruby
 class Cat < ActiveRecord::Base
+  validates :name, :life_story, :image_url, presence: true
 
-	validates :name, presence: true
-	validates :life_story, presence: true
-	validates :image_url, presence: true
-
-	def lose_a_life!
-		if self.lives > 1
-			self.lives -= 1
-			self.save
-		else 
-			self.destroy
-		end
-	end
-
+  def lose_a_life!
+    if self.lives > 1
+      self.lives -= 1
+      self.save
+    else 
+      self.destroy
+    end
+  end
 end
 ```
 
@@ -175,12 +166,12 @@ require 'faker'
 		- patch #update (edit a cat)
 - to generate these routes, we add the following to ```config/routes.rb```
 ```ruby
-  resources :cats, except: :destroy
+resources :cats, except: :destroy
 ```
 - and maybe we'll set the root page of our application to the cats index page
 ```ruby
-  resources :cats, except: :destroy
-  root to: 'cats#index'
+resources :cats, except: :destroy
+root to: 'cats#index'
 ```
 - run ```rake routes``` to see the generated routes
 
@@ -195,32 +186,26 @@ require 'faker'
 require 'rails_helper'
 
 RSpec.describe CatsController, type: :controller do
+  describe "#index" do
+    before do 
+      5.times { create(:cat) }
+      get :index
+    end
 
-	describe "#index" do
-
-		before do 
-			5.times { Cat.create(attributes_for(:cat)) }
-			get :index
-		end
-
-		it { should respond_with(200) }
-		it { should render_template(:index) }
-		it "should assign @cats to all Cats in DB" do
-			expect(assigns(:cats)).to eq(Cat.all)
-		end
-
-	end
-
+    it { should respond_with(200) }
+    it { should render_template(:index) }
+    it "should assign @cats to all Cats in DB" do
+      expect(assigns(:cats)).to eq(Cat.all)
+    end
+  end
 end
 ```
 - add controller code:
 ```ruby
 class CatsController < ApplicationController
-
-	def index
-		@cats = Cat.all
-	end
-
+  def index
+    @cats = Cat.all
+  end
 end
 ```
 - add view: ```/views/cats/index.html.erb```
@@ -241,26 +226,24 @@ end
 ### add '#show' action
 - add specs
 ```ruby
-	describe "#show" do
+describe "#show" do
+  before do
+    @cat = create(:cat)
+    get :show, id: @cat.id
+  end
 
-		before do
-			@cat = Cat.create(attributes_for(:cat))
-			get :show, id: @cat.id
-		end
-
-		it { should respond_with(200) }
-		it { should render_template(:show) }
-		it "should assign cat with specified id to @cat" do
-			expect(assigns(:cat)).to eq(@cat)
-		end
-
-	end
+  it { should respond_with(200) }
+  it { should render_template(:show) }
+  it "should assign cat with specified id to @cat" do
+    expect(assigns(:cat)).to eq(@cat)
+  end
+end
 ```
 - add controller action
 ```ruby
-	def show
-		@cat = Cat.find(params[:id])
-	end
+def show
+  @cat = Cat.find(params[:id])
+end
 ```
 - add view in ```app/views/show.html.erb```
 ```
@@ -306,16 +289,13 @@ end
 - this is going to render a form allowing us to create a new cat
 - write specs
 ```ruby
-  describe "#new" do
-
-    before do
-      get :new
-    end
-
-    it { should respond_with(200) }
-    it { should render_template(:new) }
-
+describe "#new" do
+  before do
+    get :new
   end
+  it { should respond_with(200) }
+  it { should render_template(:new) }
+end
 ```
 - create action in controller
 ```ruby
@@ -350,58 +330,58 @@ end
 - we have a form, rendered by our new action. though, we currently have nowhere to submit that form to. we need to make our #create action
 - write specs
 ```ruby
-  describe "#create" do
+describe "#create" do
 
-    context "if valid params" do
+  context "if valid params" do
 
-      before do
-        @cat_params = attributes_for(:cat)
-        post :create, { cat: @cat_params }
-      end
-
-      it { should respond_with(302) }
-      it "should redirect to the new cat's page" do
-        cat = Cat.find_by(@cat_params)
-        expect(response).to redirect_to("/cats/#{cat.id}")
-      end
-      it "creates a new cat with specified params" do
-        expect(Cat.find_by(@valid_params)).to be_truthy
-      end
-
+    before do
+      @cat_params = attributes_for(:cat)
+      post :create, { cat: @cat_params }
     end
 
-    context "if invalid params" do
-
-      before do 
-        post :create, { cat: {name: "test"} }
-      end
-
-      it { should respond_with(400) }
-      it { should render_template(:new) }
-      it "should not create a new cat" do
-        expect(Cat.find_by_name("test")).to be_nil
-      end
-
+    it { should respond_with(302) }
+    it "should redirect to the new cat's page" do
+      cat = Cat.find_by(@cat_params)
+      expect(response).to redirect_to("/cats/#{cat.id}")
+    end
+    it "creates a new cat with specified params" do
+      expect(Cat.find_by(@valid_params)).to be_truthy
     end
 
   end
+
+  context "if invalid params" do
+
+    before do 
+      post :create, { cat: {name: "test"} }
+    end
+
+    it { should respond_with(400) }
+    it { should render_template(:new) }
+    it "should not create a new cat" do
+      expect(Cat.find_by_name("test")).to be_nil
+    end
+
+  end
+
+end
 ```
 - create controller action
 ```ruby
-  def create
-    @cat = Cat.new(cat_params)
-    if @cat.save
-      redirect_to cat_path(@cat)
-    else
-      render 'new', status: 400
-    end
+def create
+  @cat = Cat.new(cat_params)
+  if @cat.save
+    redirect_to cat_path(@cat)
+  else
+    render 'new', status: 400
   end
+end
 
-  private
+private
 
-    def cat_params
-      params.require(:cat).permit(:name, :life_story, :image_url)
-    end
+  def cat_params
+    params.require(:cat).permit(:name, :life_story, :image_url)
+  end
 ```
 - visit 'localhost:3000/cats/new' and attempt to make a new cat. 
 - if we ever try to make a cat incorrectly, we'd like to have some error messages to let us know what we did wrong. those error messages are still stored in our unsaved @cat object, so we can access them in the view.
@@ -418,25 +398,23 @@ end
 - great, now we'll see error messages if any exist. But what if we visit the 'new' page for the first time? There is no cat object saved in @cat. The view will throw an error. 
 - So, in our controller's new action we'll add:
 ```ruby
-  def new
-    @cat = Cat.new
-  end
+def new
+  @cat = Cat.new
+end
 ```
 - and we'll update our specs:
 ```ruby 
-  describe "#new" do
-
-    before do
-      get :new
-    end
-
-    it { should respond_with(200) }
-    it { should render_template(:new) }
-    it "should assign an instance of Cat to @cat" do
-      expect(assigns(:cat)).to be_a(Cat)
-    end
-
+describe "#new" do
+  before do
+    get :new
   end
+
+  it { should respond_with(200) }
+  it { should render_template(:new) }
+  it "should assign an instance of Cat to @cat" do
+    expect(assigns(:cat)).to be_a(Cat)
+  end
+end
 ```
 
 ### link up your 'new cat' page 
@@ -460,26 +438,24 @@ end
 - this is going to render a form allowing us to edit an existing cat
 - write specs:
 ```ruby
-  describe "#edit" do
-
-    before do
-      @cat = create(:cat)
-      get :edit, id: @cat.id
-    end
-
-    it { should respond_with(200) }
-    it { should render_template(:edit) }
-    it "should assign cat with specified id to @cat" do
-      expect(assigns(:cat)).to eq(@cat)
-    end
-
+describe "#edit" do
+  before do
+    @cat = create(:cat)
+    get :edit, id: @cat.id
   end
+
+  it { should respond_with(200) }
+  it { should render_template(:edit) }
+  it "should assign cat with specified id to @cat" do
+    expect(assigns(:cat)).to eq(@cat)
+  end
+end
 ```
 - build controller action
 ```ruby
-  def edit
-    @cat = Cat.find(params[:id])
-  end
+def edit
+  @cat = Cat.find(params[:id])
+end
 ```
 - create ```edit.html.erb```
 ```ruby
@@ -518,52 +494,52 @@ end
 - we'll make an #update action in our controller for the edit form to submit to:
 - write specs:
 ```ruby
-  describe "#update" do
+describe "#update" do
 
-    context "with valid params" do
+  context "with valid params" do
 
-      before do
-        @cat = create(:cat)
-        @cat_params = attributes_for(:cat)
-        patch :update, { id: @cat.id, cat: @cat_params }
-      end
-
-      it { should respond_with(302) }
-      it { should redirect_to("/cats/#{@cat.id}")}
-      it "should update the attributes for cat" do
-        expect(Cat.find_by(@cat_params)).to be_truthy
-      end
-
+    before do
+      @cat = create(:cat)
+      @cat_params = attributes_for(:cat)
+      patch :update, { id: @cat.id, cat: @cat_params }
     end
-    
-    context "with invalid params" do
 
-      before do
-        @cat = create(:cat)
-        @invalid_cat_params = { name: "", life_story: "", image_url: "" }
-        patch :update, { id: @cat.id, cat: @invalid_cat_params }
-      end
-
-      it { should respond_with(400) }
-      it { should render_template(:edit) }
-      it "should not update the attributes for cat" do
-        expect(Cat.find_by(@invalid_cat_params)).to be_nil
-      end
-
+    it { should respond_with(302) }
+    it { should redirect_to("/cats/#{@cat.id}")}
+    it "should update the attributes for cat" do
+      expect(Cat.find_by(@cat_params)).to be_truthy
     end
 
   end
+  
+  context "with invalid params" do
+
+    before do
+      @cat = create(:cat)
+      @invalid_cat_params = { name: "", life_story: "", image_url: "" }
+      patch :update, { id: @cat.id, cat: @invalid_cat_params }
+    end
+
+    it { should respond_with(400) }
+    it { should render_template(:edit) }
+    it "should not update the attributes for cat" do
+      expect(Cat.find_by(@invalid_cat_params)).to be_nil
+    end
+
+  end
+
+end
 ```
 - build controller action:
 ```ruby
-  def update
-    @cat = Cat.find(params[:id])
-    if @cat.update(cat_params)
-      redirect_to @cat
-    else
-      render 'edit', status: 400
-    end
+def update
+  @cat = Cat.find(params[:id])
+  if @cat.update(cat_params)
+    redirect_to @cat
+  else
+    render 'edit', status: 400
   end
+end
 ```
 
 ### link your 'edit' page to your 'show' page
@@ -584,32 +560,30 @@ end
 ### add cat dying process
 - write specs
 ```ruby
-  describe "#show" do
+describe "#show" do
+  before do
+    @cat = Cat.create(attributes_for(:cat))
+    allow(@cat).to receive(:lose_a_life!)
+    get :show, id: @cat.id
+  end
 
-    before do
-      @cat = Cat.create(attributes_for(:cat))
-      allow(@cat).to receive(:lose_a_life!)
-      get :show, id: @cat.id
-    end
-
-    it { should respond_with(200) }
-    it { should render_template(:show) }
-    it "should assign cat with specified id to @cat" do
-      expect(assigns(:cat)).to eq(@cat)
-    end
-    it "should call cat's #lose_a_life! method" do
-      @cat.reload
-      expect(@cat.lives).to eq(8)
-    end
-
+  it { should respond_with(200) }
+  it { should render_template(:show) }
+  it "should assign cat with specified id to @cat" do
+    expect(assigns(:cat)).to eq(@cat)
+  end
+  it "should call cat's #lose_a_life! method" do
+    @cat.reload
+    expect(@cat.lives).to eq(8)
+  end
 end
 ```
 - add functionality to controller action
 ```ruby
-  def show
-    @cat = Cat.find(params[:id])
-    @cat.lose_a_life!
-  end
+def show
+  @cat = Cat.find(params[:id])
+  @cat.lose_a_life!
+end
 ```
 
 ### done 
