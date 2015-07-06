@@ -114,6 +114,7 @@ RSpec.describe Cat, type: :model do
       context "if cat has more than 1 life remaining" do
         it "decrements the cat's lives by 1" do
           healthy_cat.lose_a_life!
+          healthy_cat.reload
           expect(healthy_cat.lives).to eq(8)
         end
       end
