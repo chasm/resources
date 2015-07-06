@@ -496,9 +496,7 @@ end
 - write specs:
 ```ruby
 describe "#update" do
-
   context "with valid params" do
-
     before do
       @cat = create(:cat)
       @cat_params = attributes_for(:cat)
@@ -510,11 +508,9 @@ describe "#update" do
     it "should update the attributes for cat" do
       expect(Cat.find_by(@cat_params)).to be_truthy
     end
-
   end
   
   context "with invalid params" do
-
     before do
       @cat = create(:cat)
       @invalid_cat_params = { name: "", life_story: "", image_url: "" }
@@ -526,9 +522,7 @@ describe "#update" do
     it "should not update the attributes for cat" do
       expect(Cat.find_by(@invalid_cat_params)).to be_nil
     end
-
   end
-
 end
 ```
 - build controller action:
