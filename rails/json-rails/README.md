@@ -261,12 +261,12 @@ class Item < ActiveRecord::Base
   has_many :reviews, dependent: :destroy
 
   def average_rating
-    ratings = self.reviews.map { |review| review.rating }
-    return ratings.reduce(:+) / ratings.length
+    ratings = reviews.map { |review| review.rating }
+    ratings.reduce(:+) / ratings.length
   end
 
   def latest_review
-    return self.reviews.order(:created_at).last.body
+    reviews.order(:created_at).last.body
   end
 end
 ```
