@@ -150,14 +150,8 @@ rails g controller api/v1/items index show --skip-routes --no-helper --no-templa
 rails g controller api/v1/reviews create --skip-routes --no-helper --no-template-engine --no-assets
 ```
 
-let's make the routes we've made so far completely public. no authenticity token will be needed to hit these routes.
-
-we can do this by adding ```skip_before_filter :verify_authenticity_token``` to all our controllers.
-
 ```ruby
 class Api::V1::CategoriesController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-  
   def index
   end
 
@@ -167,8 +161,6 @@ end
 ```
 ```ruby
 class Api::V1::ItemsController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-  
   def index
   end
 
@@ -180,38 +172,6 @@ end
 class Api::V1::ReviewsController < ApplicationController
   skip_before_filter :verify_authenticity_token
   
-  def create
-  end
-end
-```
-or ... we can put it in an 'Api::V1::ApiController' and have our other controllers inherit from it.
-
-```rails g controller api/v1/api --no-helper --no-template-engine --no-assets```
-```ruby
-class Api::V1::ApiController < ApplicationController
-  skip_before_filter :verify_authenticity_token
-end
-```
-```ruby
-class Api::V1::CategoriesController < Api::V1::ApiController
-  def index
-  end
-
-  def show
-  end
-end
-```
-```ruby
-class Api::V1::ItemsController < Api::V1::ApiController
-  def index
-  end
-
-  def show
-  end
-end
-```
-```ruby
-class Api::V1::ReviewsController < Api::V1::ApiController
   def create
   end
 end
@@ -362,7 +322,7 @@ end
 if someone tries to create a review with improper parameters, we need to catch that, and inform them what they've done wrong. If they did everything correctly, we probably just want to return their newly created review in our response:
 
 ```ruby
-class Api::V1::ReviewsController < Api::V1::ApiController  
+class Api::V1::ReviewsController < ApplicationController  
   def create
     item = Item.find_by_id(params[:id])
     review = item.reviews.new(review_params)
@@ -381,7 +341,7 @@ end
 ```
 what if they try to post a review to an item that doesn't exist?
 ```ruby
-class Api::V1::ReviewsController < Api::V1::ApiController  
+class Api::V1::ReviewsController < ApplicationController
   def create
     unless item = Item.find_by_id(params[:item_id])
       render status: 404, json: { error: 'requested item does not exist' } and return
