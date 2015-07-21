@@ -115,7 +115,7 @@ Active Record is an ORM. it allows us to interact with our database using only r
   end
   ```
     - notice that we don't need to create an 'id' field for the students table. active record does this for you, it knows that all things in the table will have an id and that those ids will start at 1 and forever autoincrement up by 1 for every new row added to the table. 
-    - we also notice that we don't need to manually create 'created_at' and 'updated_at' fields with type 'datetime'. instead, we can use ```t.timestamps null:false```. even more, active record will keep update these fields for us. when we create a new 'student', active record sets 'created_at' to the exact time it was created. whenever we update a student object, active record sets 'updated_at' to the exact time it was updated.
+    - we also notice that we don't need to manually create 'created_at' and 'updated_at' fields with type 'datetime'. instead, we can use ```t.timestamps null:false```. even more, active record will keep track of these fields for us. when we create a new 'student', active record sets 'created_at' to the exact time it was created. whenever we update a student object, active record sets 'updated_at' to the exact time it was updated.
 
 - to run our migration, we run: ```rake db:migrate```. 
   - this will run all migrations in the ```db/migrate``` folder, in chronological order (that's why we have timestamps in the filename). additionally, it will only run migrations which have not yet been run.
@@ -140,7 +140,6 @@ Active Record is an ORM. it allows us to interact with our database using only r
 ### Basic CRUD Operations provided by AR
 
 ```
-
 # Create:
 
 #   Student.create(params)
