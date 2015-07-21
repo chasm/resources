@@ -67,7 +67,7 @@ Active Record is an ORM. it allows us to interact with our database using only r
 ### create a migration and migrate
 - what is a migration? short answer: any change to the structure of your database. by structure, we mean things like the addition, modification, or removal of a table, column, etc. 
 - [look at the active record docs](http://edgeguides.rubyonrails.org/active_record_migrations.html) to see all the types of migrations you can make, and how you can make them.
-- migrations have strict naming conventions. your migration will not run correctly unless everything is naming correctly. 
+- migrations have strict naming conventions. your migration will not run correctly unless everything is named correctly. 
   - the name of your migration must begin with a time stamp (YYYYMMDDHHMMSS) and end with a brief description of the migration, in snake_case. i.e. ```20150609124800_create_students.rb```
   - the file must contain a ruby class with name exactly equal to your brief description in the filename, but in PascalCase. the class must also inherit from ```ActiveRecord::Migration```
     ```ruby
