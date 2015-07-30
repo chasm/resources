@@ -14,7 +14,7 @@ post '/cats' do
   if name == "chairvan" && product == "davis"
     status 400
   else
-    @cat = Cat.create(name: params[:name], product: params[:product])
+    @cat = Cat.create(name: name, product: product)
   end
   json @cat
 end
