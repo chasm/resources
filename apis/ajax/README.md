@@ -24,6 +24,8 @@ the lecture should go as follows:
 
 - explain that ajax is just a way to communicate with a server with javascript. we can use ajax to do what postman does, but in our javascript. we  can make a request to a server, capture the response back from the server, process the response, and use that response to render things on the page. That's literally all that ajax is.
 
+- talk about the benefits of ajax
+
 - show students the $.ajax method
 ```javascript
   $.ajax({
