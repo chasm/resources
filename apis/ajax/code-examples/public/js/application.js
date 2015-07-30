@@ -1,6 +1,5 @@
 $(document).ready(function() {
 
-
   // example get request to our server
   $('#get-cats-button').click(function(e) {
     e.preventDefault();
