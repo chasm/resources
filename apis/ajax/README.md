@@ -1,13 +1,15 @@
 # AJAX LECTURE
 
-check out the attached code example. its a simple cat server. there is a single 'cats' table. cats have a 'name' and a 'product'. 
+check out the attached [code example](./code-examples). its a simple cat server. there is a single 'cats' table. cats have a 'name' and a 'product'. 
 
 clone down the code example in ```./code-examples``` and run:
-```bundle```
-```rake db:create```
-```rake db:migrate```
-```rake db:seed```
-```shotgun```
+```
+bundle
+rake db:create
+rake db:migrate
+rake db:seed
+shotgun
+```
 
 now visit localhost:9393
 
