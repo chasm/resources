@@ -13,8 +13,8 @@ shotgun
 
 now visit localhost:9393
 
-our javascript example code can be found in ```./public/js/application.js```
-our corresponding html can be found in ```./app/views/index.erb```
+our javascript example code can be found [here](./public/js/application.js)
+our corresponding html can be found in [here](./app/views/index.erb)
 
 the lecture should go as follows:
   
