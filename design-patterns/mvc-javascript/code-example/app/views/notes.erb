@@ -1,0 +1,7 @@
+<div class="notes">
+  <% @notes.each do |note| %>
+    <div class="note" data-id="<%= note.id %>">
+      <%= note.content %>
+    </div>
+  <% end %>
+</div>
