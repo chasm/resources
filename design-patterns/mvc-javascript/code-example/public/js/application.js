@@ -21,5 +21,21 @@ $(document).ready(function() {
   }).fail(function () {
     alert('could not render customers');
   });
-  
+
+  $(document).on('click', '.delete-customer-button', function (e) {
+    e.preventDefault();
+    var $deleteButton = $(e.target);
+    var $customerDiv = $deleteButton.parent();
+
+    $.ajax({
+      type: "DELETE",
+      url: $deleteButton.attr('href')
+    }).done(function () {
+      $customerDiv.remove();
+    }).fail(function () {
+      alert('could not delete customer');
+    });
+    
+  })
+
 });
