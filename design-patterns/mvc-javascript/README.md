@@ -185,7 +185,7 @@ $(document).on('click', '.delete-customer-button', function (e) {
 });
 ```
 
-we listen for click events on any 'delete-customer-button's. when they happen, we immediately preventDefault on the event. we turn the button into a jQuery object and assign it to var $deleteButton. we also turn the customer list item containing that delete button, turn it into a jQuery object, and assign it to var $customerListItem.
+we listen for click events on any 'delete-customer-button's. when they happen, we immediately preventDefault on the event. we turn the button into a jQuery object and assign it to var $deleteButton. we also take the customer list item containing that delete button, turn it into a jQuery object, and assign it to var $customerListItem.
 
 then, we use ajax to make a 'delete /customers/:id' request to our server. we can easily pull the url off of our $deleteButton.
 
