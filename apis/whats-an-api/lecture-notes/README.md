@@ -13,7 +13,7 @@
 - Show twitter's api, their routes, and agreements for each route.
 
 ## Slide 6: 
-- Let's build two applications, one in c# and one in ruby. Let's build apis for both of them, and get them talking to eachother.
+- Let's build two applications. Let's build apis for both of them, and get them talking to eachother.
 - Show both apps, and show how they interact with eachother
 
 ## Slide 7:
